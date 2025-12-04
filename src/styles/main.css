@@ -8644,6 +8644,21 @@ body.transitioning {
   }
 }
 
+/* Scroll Arrow Icon Swing Animation */
+.scroll-arrow-icon {
+  animation: arrowSwing 1.5s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes arrowSwing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 /* Advanced Social Icons in FlowAnimation */
 .social-link {
   position: relative;
