@@ -38,34 +38,27 @@ const MinimalistNav = () => {
         const rect = section.element.getBoundingClientRect()
         const elementTop = rect.top + window.scrollY
         const elementBottom = elementTop + rect.height
-        
         if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
           activeSection = section.id
           break
-        }
-        else if (scrollPosition > elementTop) {
+        } else if (scrollPosition > elementTop) {
           activeSection = section.id
         }
       }
     }
-    
     return activeSection
   }
 
   useEffect(() => {
     const handleScroll = () => {
       const currentPath = location.pathname
-      
       // Only show nav on home page
       if (currentPath !== '/') {
         setIsVisible(false)
         return
       }
-      
       let heroSection = document.querySelector('.hero-three')
-      
       const currentScrollY = window.scrollY
-      
       // Determine scroll direction
       if (currentScrollY > lastScrollY) {
         setScrollDirection('down')
@@ -73,18 +66,15 @@ const MinimalistNav = () => {
         setScrollDirection('up')
       }
       setLastScrollY(currentScrollY)
-      
-      // Show nav when scrolled past hero section
+      // Show nav when scrolled past hero section or fallback
+      let showNav = false
       if (heroSection) {
         const heroHeight = heroSection.offsetHeight
-        
-        if (currentScrollY > heroHeight * 0.8) {
-          setIsVisible(true)
-        } else {
-          setIsVisible(false)
-        }
+        showNav = currentScrollY > heroHeight * 0.8
+      } else {
+        showNav = currentScrollY > 480 // fallback if .hero-three not found
       }
-
+      setIsVisible(showNav)
       // Update active section based on scroll position
       const currentActiveSection = getActiveSectionOnHome()
       const sectionNameMap = {
@@ -96,7 +86,6 @@ const MinimalistNav = () => {
       }
       setActiveSection(sectionNameMap[currentActiveSection] || 'HOME')
     }
-
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll() // Initial check
     return () => window.removeEventListener('scroll', handleScroll)
@@ -105,7 +94,6 @@ const MinimalistNav = () => {
   // Ensure nav visibility/active state updates when route changes
   useEffect(() => {
     const currentPath = location.pathname
-
     // Only show on home page
     if (currentPath === '/') {
       const section = getActiveSectionOnHome()
@@ -127,9 +115,7 @@ const MinimalistNav = () => {
     const handleFlowVisibility = (event) => {
       setIsFlowFooterVisible(Boolean(event.detail?.visible))
     }
-
     window.addEventListener('flowAnimationVisibility', handleFlowVisibility)
-
     return () => {
       window.removeEventListener('flowAnimationVisibility', handleFlowVisibility)
     }
@@ -137,10 +123,8 @@ const MinimalistNav = () => {
 
   const handleNavClick = (event, item) => {
     event.preventDefault()
-    
     // Only scroll to sections on home page
     const currentPath = window.location.pathname
-    
     if (currentPath !== '/') {
       // If not on home page, navigate to home first
       navigateWithCircle(event, '/', () => {
@@ -149,7 +133,6 @@ const MinimalistNav = () => {
       })
       return
     }
-
     // On home page, scroll to section
     const sectionMap = {
       'HOME': '.hero-three',
@@ -157,20 +140,16 @@ const MinimalistNav = () => {
       'OUR PROJECTS': '#projects',
       'CONTACT': '#contact'
     }
-    
     const selector = sectionMap[item.name]
     if (selector) {
       const element = document.querySelector(selector)
-      
       if (element) {
         const elementPosition = element.getBoundingClientRect().top + window.scrollY
         const offsetPosition = elementPosition - 80 // Account for nav height
-        
         window.scrollTo({
           top: offsetPosition,
           behavior: 'smooth'
         })
-        
         // Update active section immediately
         setActiveSection(item.name)
       }

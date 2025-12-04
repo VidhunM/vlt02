@@ -4,6 +4,7 @@ const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
   const [isInClientSection, setIsInClientSection] = useState(false)
+  const [isHeaderNavOpen, setIsHeaderNavOpen] = useState(false)
 
   useEffect(() => {
     const updateCursor = (e) => {
@@ -45,15 +46,31 @@ const CustomCursor = () => {
     }
   }, [])
 
+  // Listen for header nav toggle events
+  useEffect(() => {
+    const handleHeaderNavToggle = (event) => {
+      setIsHeaderNavOpen(Boolean(event.detail?.isOpen))
+    }
+    window.addEventListener('headerNavToggle', handleHeaderNavToggle)
+    return () => {
+      window.removeEventListener('headerNavToggle', handleHeaderNavToggle)
+    }
+  }, [])
+
+  const cursorSize = isHeaderNavOpen ? 80 : (isInClientSection ? 60 : 16)
+  const offset = isHeaderNavOpen ? 40 : (isInClientSection ? 30 : 10)
+
   return (
     <div
-      className={`custom-cursor ${isHovering || isInClientSection ? 'hover' : ''} ${isInClientSection ? 'client-section' : ''}`}
+      className={`custom-cursor ${isHovering || isInClientSection || isHeaderNavOpen ? 'hover' : ''} ${isInClientSection ? 'client-section' : ''} ${isHeaderNavOpen ? 'header-nav-open' : ''}`}
       style={{
-        left: `${position.x - (isInClientSection ? 30 : 10)}px`,
-        top: `${position.y - (isInClientSection ? 30 : 10)}px`,
+        left: `${position.x - offset}px`,
+        top: `${position.y - offset}px`,
+        width: `${cursorSize}px`,
+        height: `${cursorSize}px`,
       }}
     >
-      {isInClientSection && <span className="cursor-text">click</span>}
+      {(isInClientSection || isHeaderNavOpen) && <span className="cursor-text">{isHeaderNavOpen ? 'nav' : 'click'}</span>}
     </div>
   )
 }

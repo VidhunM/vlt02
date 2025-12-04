@@ -75,6 +75,66 @@ body {
   user-select: none;
 }
 
+/* Cursor when header nav is open - bigger */
+.custom-cursor.header-nav-open {
+  width: 80px;
+  height: 80px;
+  background: #009E60;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 30px rgba(0, 158, 96, 1);
+}
+
+.custom-cursor.header-nav-open.hover {
+  transform: scale(1.1);
+  background: #00C878;
+  box-shadow: 0 0 40px rgba(0, 200, 120, 1);
+}
+
+.custom-cursor.header-nav-open .cursor-text {
+  font-size: 14px;
+}
+
+/* Animations for overlays */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark overlay styles */
+.dark-overlay {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Header nav overlay styles */
+.header-nav-overlay {
+  animation: fadeIn 0.3s ease;
+}
+
+.header-nav-menu {
+  animation: slideUp 0.3s ease;
+}
+
+.header-nav-link-big:hover {
+  color: #009E60 !important;
+  transform: translateX(10px);
+  transition: all 0.2s ease;
+}
+
 /* Hide default cursor on interactive elements */
 a, button, .project-item, .nav-link {
   cursor: none;
@@ -8582,6 +8642,81 @@ body.transitioning {
     height: clamp(250px, 40vh, 400px) !important;
     min-height: 250px !important;
   }
+}
+
+/* Advanced Social Icons in FlowAnimation */
+.social-link {
+  position: relative;
+  overflow: visible;
+}
+
+.social-link::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  z-index: -1;
+}
+
+.social-link:hover::before {
+  width: 80px;
+  height: 80px;
+  opacity: 1;
+}
+
+.social-link:hover {
+  transform: translateY(-5px) scale(1.1);
+  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)';
+}
+
+.social-link:active {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Instagram icon specific hover effects */
+.social-link-instagram:hover .instagram-icon {
+  filter: drop-shadow(0 0 12px rgba(225, 48, 108, 0.6));
+  animation: instagramPulse 0.6s ease-in-out;
+}
+
+/* LinkedIn icon specific hover effects */
+.social-link-linkedin:hover .linkedin-icon {
+  filter: drop-shadow(0 0 12px rgba(0, 119, 181, 0.6));
+  animation: linkedinPulse 0.6s ease-in-out;
+}
+
+@keyframes instagramPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes linkedinPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.social-icon {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.social-link:hover .social-icon {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 }
 
 /* Landscape Mobile (max-width: 991px and landscape) */

@@ -9,6 +9,8 @@ const Header = ({ logoSrc, menuItems }) => {
     if (typeof window === 'undefined') return true
     return window.innerWidth <= 1024
   })
+  const [showDarkOverlay, setShowDarkOverlay] = useState(false)
+  const [isHeaderNavOpen, setIsHeaderNavOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -45,11 +47,6 @@ const Header = ({ logoSrc, menuItems }) => {
       } else if (currentPath === '/our-team') {
         // Our Team page - check .team-hero
         heroSection = document.querySelector('.team-hero')
-      } else if (currentPath === '/contact') {
-        // Contact page - use scroll position since .contact-page-dark is entire page
-        isVisible = scrollY < windowHeight * 0.3
-        setIsHeroInView(isVisible)
-        return
       } else if (currentPath === '/our-service' || currentPath === '/our-feed') {
         // Pages without specific hero sections - use scroll position
         // Show hamburger when at top of page (within first viewport)
@@ -109,7 +106,7 @@ const Header = ({ logoSrc, menuItems }) => {
 
     if (!body) return
 
-    if (isMenuOpen) {
+    if (isMenuOpen || showDarkOverlay || isHeaderNavOpen) {
       body.style.overflow = 'hidden'
     } else {
       body.style.overflow = ''
@@ -118,7 +115,14 @@ const Header = ({ logoSrc, menuItems }) => {
     return () => {
       body.style.overflow = ''
     }
-  }, [isMenuOpen])
+  }, [isMenuOpen, showDarkOverlay, isHeaderNavOpen])
+
+  // Dispatch event for CustomCursor when header nav is open
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('headerNavToggle', {
+      detail: { isOpen: isHeaderNavOpen }
+    }))
+  }, [isHeaderNavOpen])
 
   const toggleMenu = () => {
     const newState = !isMenuOpen
@@ -170,7 +174,6 @@ const Header = ({ logoSrc, menuItems }) => {
     { label: 'Home', href: '#home' },
     { label: 'Our Services', href: '#services' },
     { label: 'Our Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' }
   ]
 
   const items = Array.isArray(menuItems) && menuItems.length ? menuItems : defaultMenu
@@ -195,6 +198,49 @@ const Header = ({ logoSrc, menuItems }) => {
     }
   }
 
+  const handleGetInTouch = (event) => {
+    event.preventDefault()
+    setShowDarkOverlay(true)
+    
+    // Check if we're on home page
+    if (location.pathname === '/') {
+      // Scroll to contact section on home page
+      setTimeout(() => {
+        const contactSection = document.getElementById('contact')
+        if (contactSection) {
+          const elementPosition = contactSection.getBoundingClientRect().top + window.scrollY
+          const offsetPosition = elementPosition - 80 // Account for header height
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+        // Hide overlay after scroll starts
+        setTimeout(() => {
+          setShowDarkOverlay(false)
+        }, 500)
+      }, 300)
+    } else {
+      // Navigate to contact page if not on home page
+      setTimeout(() => {
+        navigate('/contact')
+        setShowDarkOverlay(false)
+      }, 300)
+    }
+  }
+
+  const handleHeaderClick = (event) => {
+    // Only trigger on desktop and when clicking logo/nav area (not buttons)
+    if (!isMobile && (event.target.closest('.nav-logo') || event.target.closest('.nav-brand'))) {
+      setIsHeaderNavOpen(!isHeaderNavOpen)
+    }
+  }
+
+  const closeHeaderNav = () => {
+    setIsHeaderNavOpen(false)
+  }
+
   const headerClasses = [
     'header',
     !isMobile ? 'header-desktop' : '',
@@ -206,11 +252,116 @@ const Header = ({ logoSrc, menuItems }) => {
 
   return (
     <header className={headerClasses}>
+      {/* Dark Overlay for Get In Touch */}
+      {showDarkOverlay && (
+        <div 
+          className="dark-overlay" 
+          onClick={() => setShowDarkOverlay(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.85)',
+            zIndex: 9998,
+            backdropFilter: 'blur(8px)',
+            animation: 'fadeIn 0.3s ease'
+          }}
+        />
+      )}
+      
+      {/* Bigger Navigation Menu when Header is clicked */}
+      {isHeaderNavOpen && !isMobile && (
+        <div 
+          className="header-nav-overlay" 
+          onClick={closeHeaderNav}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.7)',
+            zIndex: 9997,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(5px)',
+            animation: 'fadeIn 0.3s ease'
+          }}
+        >
+          <div 
+            className="header-nav-menu"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#fff',
+              padding: '3rem 4rem',
+              borderRadius: '20px',
+              minWidth: '400px',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+              animation: 'slideUp 0.3s ease'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <h2 style={{ margin: 0, fontSize: '2rem', fontWeight: 700, color: '#181818' }}>Navigation</h2>
+              <button 
+                onClick={closeHeaderNav}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  fontSize: '2rem',
+                  cursor: 'pointer',
+                  color: '#181818',
+                  padding: '0.5rem',
+                  lineHeight: 1
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {items.map((item, idx) => (
+                <li key={`${item.label}-${idx}`} style={{ marginBottom: '1.5rem' }}>
+                  <button
+                    className="header-nav-link-big"
+                    onClick={(e) => {
+                      handleDesktopNav(e, item.href || '/')
+                      closeHeaderNav()
+                    }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      fontSize: '1.8rem',
+                      fontWeight: 600,
+                      color: '#181818',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      width: '100%',
+                      padding: '0.5rem 0',
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
       <nav className="nav">
-        <div className="nav-brand">
-          <Link to="/" className="nav-logo">
-            <img src={resolvedLogo} alt="Vulture Lines" className="logo-image" />
-          </Link>
+        <div className="nav-brand" onClick={handleHeaderClick} style={{ cursor: 'pointer' }}>
+          {!isMobile ? (
+            <div className="nav-logo" style={{ cursor: 'pointer' }}>
+              <img src={resolvedLogo} alt="Vulture Lines" className="logo-image" />
+            </div>
+          ) : (
+            <Link to="/" className="nav-logo">
+              <img src={resolvedLogo} alt="Vulture Lines" className="logo-image" />
+            </Link>
+          )}
         </div>
 
         {isMobile ? (
@@ -244,7 +395,7 @@ const Header = ({ logoSrc, menuItems }) => {
             <button
               type="button"
               className="nav-cta-desktop"
-              onClick={(e) => handleDesktopNav(e, '/contact')}
+              onClick={handleGetInTouch}
             >
               Get In Touch
             </button>
