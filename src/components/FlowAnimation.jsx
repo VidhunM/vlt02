@@ -97,10 +97,11 @@ const FlowAnimation = () => {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative' }}>
+    <div ref={containerRef} className="flow-animation-container" style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative' }}>
       {/* Absolute-positioned Arrow (scrolls with section) */}
       {showScrollTop && (
         <button 
+          className="flow-scroll-top-btn"
           aria-label="Scroll to top" 
           onClick={scrollToTop}
           style={{ 
@@ -126,16 +127,16 @@ const FlowAnimation = () => {
         </button>
       )}
       {/* Main Section */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', padding: '0 0 60px 0' }}>
+      <div className="flow-main-section" style={{ flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', padding: '0 0 60px 0' }}>
         {/* Left: Logo above Text */}
-        <div style={{ marginLeft: '25px', marginBottom: '60px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-          <img src="/assets/Images/Vlt_logo1.png" alt="Vulturelines Logo" style={{ width: 400, height: 400, objectFit: 'contain', display: 'block', marginBottom: 0 }} />
-          <span style={{ color: '#181818', background: '#fff', fontSize: 32, fontWeight: 700, borderRadius: 3, padding: '8px 20px', display: 'block', textAlign: 'left', marginTop: -20, marginLeft: 15 }}>Powered by Vulturelines</span>
+        <div className="flow-logo-section" style={{ marginLeft: '25px', marginBottom: '60px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+          <img className="flow-logo" src="/assets/Images/Vlt_logo1.png" alt="Vulturelines Logo" style={{ width: 400, height: 400, objectFit: 'contain', display: 'block', marginBottom: 0 }} />
+          <span className="flow-powered-text" style={{ color: '#181818', background: '#fff', fontSize: 32, fontWeight: 700, borderRadius: 3, padding: '8px 20px', display: 'block', textAlign: 'left', marginTop: -20, marginLeft: 15 }}>Powered by Vulturelines</span>
         </div>
         {/* Right: Icons above Email */}
-        <div style={{ marginRight: '110px', marginBottom: '60px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 20 }}>
+        <div className="flow-social-section" style={{ marginRight: '110px', marginBottom: '60px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 20 }}>
           {/* Advanced Icons with hover effects */}
-          <div style={{ display: 'flex', gap: 20, marginBottom: 10, alignItems: 'center' }}>
+          <div className="flow-social-icons" style={{ display: 'flex', gap: 20, marginBottom: 10, alignItems: 'center' }}>
             {socials.map((s, index) => (
               <a 
                 key={s.name} 
@@ -165,12 +166,12 @@ const FlowAnimation = () => {
             ))}
           </div>
           {/* Email, smaller */}
-          <span style={{ fontSize: 38, fontWeight: 500, color: '#181818', fontFamily: 'Arial, sans-serif', letterSpacing: '-2px', textAlign: 'right' }}>sutheesh.s@vulturelines.com</span>
+          <span className="flow-email" style={{ fontSize: 38, fontWeight: 500, color: '#181818', fontFamily: 'Arial, sans-serif', letterSpacing: '-2px', textAlign: 'right' }}>sutheesh.s@vulturelines.com</span>
         </div>
       </div>
       {/* Bottom Bar */}
-      <div style={{ borderTop: '2px solid #181818', background: '#fff', minHeight: 62, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 40px' }}>
-        <div style={{ color: '#181818', fontSize: 20 }}>&copy; 2025 Vulturelines. All rights reserved.</div>
+      <div className="flow-bottom-bar" style={{ borderTop: '2px solid #181818', background: '#fff', minHeight: 62, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 40px' }}>
+        <div className="flow-copyright" style={{ color: '#181818', fontSize: 20 }}>&copy; 2025 Vulturelines. All rights reserved.</div>
       </div>
     </div>
   );

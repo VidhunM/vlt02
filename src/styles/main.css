@@ -8659,6 +8659,122 @@ body.transitioning {
   }
 }
 
+/* FlowAnimation Mobile Responsive */
+@media (max-width: 768px) {
+  .flow-animation-container {
+    min-height: auto !important;
+    padding-bottom: 0 !important;
+  }
+
+  .flow-scroll-top-btn {
+    display: none !important;
+  }
+
+  .flow-main-section {
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 0 0 40px 0 !important;
+    gap: 30px !important;
+  }
+
+  .flow-logo-section {
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+    align-items: center !important;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .flow-logo {
+    width: clamp(200px, 50vw, 300px) !important;
+    height: clamp(200px, 50vw, 300px) !important;
+    margin-bottom: 0 !important;
+  }
+
+  .flow-powered-text {
+    font-size: clamp(18px, 4vw, 24px) !important;
+    padding: 6px 16px !important;
+    margin-top: -15px !important;
+    margin-left: 0 !important;
+    text-align: center !important;
+    white-space: nowrap;
+  }
+
+  .flow-social-section {
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    align-items: center !important;
+    width: 100%;
+    padding: 0 20px;
+    gap: 16px !important;
+  }
+
+  .flow-social-icons {
+    gap: 16px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .flow-social-section .social-link {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .flow-social-section .social-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .flow-email {
+    font-size: clamp(16px, 4vw, 22px) !important;
+    letter-spacing: -1px !important;
+    text-align: center !important;
+    word-break: break-all;
+    line-height: 1.3;
+  }
+
+  .flow-bottom-bar {
+    padding: 0 20px !important;
+    min-height: 50px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+
+  .flow-copyright {
+    font-size: clamp(12px, 3vw, 16px) !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .flow-logo {
+    width: clamp(150px, 45vw, 250px) !important;
+    height: clamp(150px, 45vw, 250px) !important;
+  }
+
+  .flow-powered-text {
+    font-size: clamp(16px, 3.5vw, 20px) !important;
+    padding: 5px 12px !important;
+    margin-top: -12px !important;
+  }
+
+  .flow-social-section .social-link {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .flow-social-section .social-icon {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .flow-email {
+    font-size: clamp(14px, 3.5vw, 18px) !important;
+  }
+}
+
 /* Advanced Social Icons in FlowAnimation */
 .social-link {
   position: relative;
