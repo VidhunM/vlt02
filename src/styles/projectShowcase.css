@@ -288,7 +288,7 @@
   flex-direction: row;
   align-items: stretch;
   gap: 40px;
-  animation: auto-marquee 36s linear infinite;
+  animation: auto-marquee 24s linear infinite;
   will-change: transform;
 }
 .auto-marquee-card {

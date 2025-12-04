@@ -11,24 +11,16 @@ const MinimalistNav = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
+  // Show 4 menu items that scroll to home sections
   const menuItems = [
-    { name: 'HOME', href: '/', sectionId: 'home' },
-    { name: 'OUR SERVICE', href: '/our-service', sectionId: 'services' },
-    { name: 'OUR PROJECTS', href: '/work', sectionId: 'projects' },
-    { name: 'CONTACT', href: '/contact', sectionId: 'contact' }
+    { name: 'HOME', sectionId: 'home' },
+    { name: 'OUR SERVICE', sectionId: 'services' },
+    { name: 'OUR PROJECTS', sectionId: 'projects' },
+    { name: 'CONTACT', sectionId: 'contact' }
   ]
 
-  // Function to detect which section is currently in view
-  const getActiveSection = () => {
-    // Check current page route
-    const currentPath = window.location.pathname
-    
-    // Handle different pages
-    if (currentPath === '/work') return 'projects'
-    if (currentPath === '/our-team') return 'team'
-    if (currentPath === '/contact') return 'contact'
-    
-    // For home page, detect sections
+  // Function to detect which section is currently in view on Home page
+  const getActiveSectionOnHome = () => {
     const sections = [
       { id: 'home', element: document.querySelector('.hero-three') },
       { id: 'services', element: document.querySelector('#services') },
@@ -63,18 +55,14 @@ const MinimalistNav = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentPath = location.pathname
-      let heroSection = null
       
-      // Determine hero section based on current page
-      if (currentPath === '/work') {
-        heroSection = document.querySelector('.work-hero') || document.querySelector('.page.work')
-      } else if (currentPath === '/our-team') {
-        heroSection = document.querySelector('.team-hero') || document.querySelector('.our-team')
-      } else if (currentPath === '/contact') {
-        heroSection = document.querySelector('.contact-page-dark')
-      } else {
-        heroSection = document.querySelector('.hero-three')
+      // Only show nav on home page
+      if (currentPath !== '/') {
+        setIsVisible(false)
+        return
       }
+      
+      let heroSection = document.querySelector('.hero-three')
       
       const currentScrollY = window.scrollY
       
@@ -86,11 +74,8 @@ const MinimalistNav = () => {
       }
       setLastScrollY(currentScrollY)
       
-      // Show nav when scrolled past hero section or immediately on certain pages
-      if (currentPath === '/contact') {
-        // Always show nav on contact page
-        setIsVisible(true)
-      } else if (heroSection) {
+      // Show nav when scrolled past hero section
+      if (heroSection) {
         const heroHeight = heroSection.offsetHeight
         
         if (currentScrollY > heroHeight * 0.8) {
@@ -101,8 +86,15 @@ const MinimalistNav = () => {
       }
 
       // Update active section based on scroll position
-      const currentActiveSection = getActiveSection()
-      setActiveSection(currentActiveSection.toUpperCase())
+      const currentActiveSection = getActiveSectionOnHome()
+      const sectionNameMap = {
+        'home': 'HOME',
+        'services': 'OUR SERVICE',
+        'projects': 'OUR PROJECTS',
+        'feed': 'OUR PROJECTS',
+        'contact': 'CONTACT'
+      }
+      setActiveSection(sectionNameMap[currentActiveSection] || 'HOME')
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -114,25 +106,20 @@ const MinimalistNav = () => {
   useEffect(() => {
     const currentPath = location.pathname
 
-    if (currentPath === '/contact') {
-      setIsVisible(true)
-      setActiveSection('CONTACT')
-    } else if (currentPath === '/') {
-      // On home, re-evaluate active section on route change
-      const section = getActiveSection()
-      setActiveSection(section.toUpperCase())
+    // Only show on home page
+    if (currentPath === '/') {
+      const section = getActiveSectionOnHome()
+      const sectionNameMap = {
+        'home': 'HOME',
+        'services': 'OUR SERVICE',
+        'projects': 'OUR PROJECTS',
+        'feed': 'OUR PROJECTS',
+        'contact': 'CONTACT'
+      }
+      setActiveSection(sectionNameMap[section] || 'HOME')
     } else {
-      // For other routes, set active based on predefined mapping
-      const routeMap = {
-        '/work': 'PROJECTS',
-        '/our-team': 'OUR TEAM',
-        '/our-service': 'OUR SERVICE'
-      }
-      const mapped = routeMap[currentPath]
-      if (mapped) {
-        setActiveSection(mapped)
-        setIsVisible(true)
-      }
+      setIsVisible(false)
+      setActiveSection('HOME')
     }
   }, [location.pathname])
 
@@ -149,39 +136,43 @@ const MinimalistNav = () => {
   }, [])
 
   const handleNavClick = (event, item) => {
-    // Handle navigation
-    if (item.href.startsWith('/')) {
-      // Route navigation with circle transition
-      navigateWithCircle(event, item.href, () => {
-        navigate(item.href)
+    event.preventDefault()
+    
+    // Only scroll to sections on home page
+    const currentPath = window.location.pathname
+    
+    if (currentPath !== '/') {
+      // If not on home page, navigate to home first
+      navigateWithCircle(event, '/', () => {
+        navigate('/')
+        setActiveSection('HOME')
       })
-    } else if (item.href.startsWith('#')) {
-      // Check if we're on home page for section scrolling
-      const currentPath = window.location.pathname
+      return
+    }
+
+    // On home page, scroll to section
+    const sectionMap = {
+      'HOME': '.hero-three',
+      'OUR SERVICE': '#services',
+      'OUR PROJECTS': '#projects',
+      'CONTACT': '#contact'
+    }
+    
+    const selector = sectionMap[item.name]
+    if (selector) {
+      const element = document.querySelector(selector)
       
-      if (currentPath !== '/') {
-        // Redirect to home page with hash using circle transition
-        navigateWithCircle(event, '/' + item.href, () => {
-          navigate('/' + item.href)
-        })
-      } else {
-        // Smooth scroll to section on current page
-        const sectionId = item.href.substring(1) // Remove '#' from href
-        const element = document.getElementById(sectionId)
+      if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY
+        const offsetPosition = elementPosition - 80 // Account for nav height
         
-        if (element) {
-          // Use scrollIntoView with offset for better UX
-          const elementPosition = element.getBoundingClientRect().top + window.scrollY
-          const offsetPosition = elementPosition - 80 // Account for nav height
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          })
-          
-          // Update active section immediately for better responsiveness
-          setActiveSection(item.name)
-        }
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+        
+        // Update active section immediately
+        setActiveSection(item.name)
       }
     }
   }

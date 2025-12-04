@@ -144,27 +144,55 @@ const Header = ({ logoSrc, menuItems }) => {
   }
 
   const handleNavClick = (event, href) => {
-    closeMenu()
-    navigateWithCircle(event, href, () => {
-      navigate(href)
-    })
+    event.preventDefault()
+    
+    // If it's a section link (starts with #), scroll to it
+    if (href.startsWith('#')) {
+      const sectionId = href.substring(1)
+      const element = document.getElementById(sectionId)
+      
+      if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY
+        const offsetPosition = elementPosition - 80
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+      closeMenu()
+    }
   }
 
   const resolvedLogo = logoSrc || '/assets/Images/Vultureline_img1.png'
 
   const defaultMenu = [
-    { label: 'Home', href: '/' },
-    { label: 'Our Services', href: '/our-service' },
-    { label: 'Our Projects', href: '/work' }
+    { label: 'Home', href: '#home' },
+    { label: 'Our Services', href: '#services' },
+    { label: 'Our Projects', href: '#projects' },
+    { label: 'Contact', href: '#contact' }
   ]
 
   const items = Array.isArray(menuItems) && menuItems.length ? menuItems : defaultMenu
 
   const handleDesktopNav = (event, href) => {
     event.preventDefault()
-    navigateWithCircle(event, href, () => {
-      navigate(href)
-    })
+    
+    // If it's a section link (starts with #), scroll to it
+    if (href.startsWith('#')) {
+      const sectionId = href.substring(1)
+      const element = document.getElementById(sectionId)
+      
+      if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY
+        const offsetPosition = elementPosition - 80
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }
   }
 
   const headerClasses = [

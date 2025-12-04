@@ -349,7 +349,7 @@ const Home = () => {
                 key={`${lineIndex}-${letterIndex}`}
                 style={{
                   color: isFilled ? '#000' : getTextColor(easedLineProgress),
-                  transition: 'color 0.15s linear'
+                  transition: 'color 0.08s linear'
                 }}
               >
                 {letter}
@@ -898,22 +898,6 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                         <div className="service-label">{service.label}</div>
                         <h2 className="service-main-title">{service.title}</h2>
                         <p className="service-description">{service.description}</p>
-                        <button 
-                          className="service-cta-btn"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            try {
-                              handleNavigationClick(e, '/our-service')
-                            } catch (error) {
-                              console.error('Navigation error:', error)
-                              navigate('/our-service')
-                            }
-                          }}
-                        >
-                          <span>Find Out More</span>
-                          <div className="btn-icon orange-dots"></div>
-                        </button>
                       </div>
                     </div>
                   )
@@ -1180,7 +1164,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             }}
           >
             {/* Floating 3D Icons */}
-            <div className="contact-floating-icons">
+            <div className="contact-floating-icons" style={{ display: 'none' }}>
               {floatingIcons.map((icon) => (
                 <div
                   key={icon.id}
@@ -1208,21 +1192,10 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 maxWidth: 820,
                 width: '100%',
                 padding: '0 48px',
-                marginBottom: '80px'
+                marginBottom: '80px',
+                display: 'none'
               }}
-            >
-              <h2
-                style={{
-                  fontSize: 'clamp(30px, 4.6vw, 60px)',
-                  lineHeight: 1.2,
-                  fontWeight: 600,
-                  letterSpacing: '-0.8px',
-                  marginBottom: 40
-                }}
-              >
-                {renderAnimatedText()}
-              </h2>
-            </div>
+            ></div>
 
             {/* Contact Form Section - Image Style */}
             <div
