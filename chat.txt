@@ -1,0 +1,931 @@
+Date: 2025-10-30
+Topics: Capabilities section layout update; conversation log setup
+Code changes: Updated `src/pages/Home.jsx` to make Capabilities left column sticky (position: sticky; top: 0) replacing previous translate-based animation.
+Decisions: Keep inline styles (minimal edits), keep id="feed" and current content; apply stickiness across all breakpoints.
+Next steps: Verify responsive behavior; optionally move sticky rule to CSS class if reuse is desired.
+
+Date: 2025-10-30
+Topics: Home services overlay one-by-one slide-up on scroll; observer lifecycle fix
+Code changes: In `src/pages/Home.jsx`, split scroll listener and IntersectionObserver logic into two effects. Added `lastScrollRef` to avoid re-attaching listeners on scroll. Observers for service 2/3/4 now initialize once and clean up on unmount; emblem observer unchanged in behavior but moved to the one-time effect. No CSS/markup changes.
+Decisions: Minimal, targeted fix; keep existing thresholds and trigger markers; preserve current animation classes in CSS.
+Next steps: Visually verify scroll down/up behavior across breakpoints; optionally add small stagger delay if desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page background color update
+Code changes: In `src/pages/OurService.jsx`, changed top-level wrapper background from `#f8f9fa` to `#ffffff` to make the page background white.
+Decisions: Minimal, page-scoped inline style change to avoid affecting other routes.
+Next steps: Verify text and card contrast on white; adjust any section-specific backgrounds if needed.
+
+Date: 2025-10-31
+Time: N/A (timestamp command unavailable)
+Topics: Our Feed carousel removal request
+Code changes: Removed circular carousel section and associated scroll animation refs from `src/pages/OurFeed.jsx`.
+Decisions: Preserve 3D gallery and highlights sections without replacements for carousel.
+Next steps: Review Our Feed layout for spacing gaps and confirm no lingering carousel styles.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page custom header (logo + menu)
+Code changes: 
+- `src/components/Header.jsx`: added `logoSrc` and `menuItems` props with safe defaults; menu renders `Link` or anchor based on href.
+- `src/pages/OurService.jsx`: replaced `MinimalistNav` with `Header`, passing `logoSrc` `/assets/Images/Vlt_logo1.png` and a page-specific menu.
+Decisions: Keep change scoped to Our Service; maintain defaults for other pages; no global CSS edits.
+Next steps: Confirm chosen logo and menu match branding; adjust items/links if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Header circle button color update
+Code changes: In `src/styles/main.css`, updated `.nav-circle-btn` to dark blue background/border (`#0d47a1`), hover to `#0b3d91`, and kept `.circle-v` text white on hover.
+Decisions: Global style to match requested dark blue for the V menu circle; maintains contrast and hover feedback.
+Next steps: Verify on all pages that header contrast remains accessible on light/dark backgrounds.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page content section under 3D cards
+Code changes: In `src/pages/OurService.jsx`, added a responsive two-column section below the carousel (image left, title/metadata/description/link right) using inline styles and placeholder content.
+Decisions: Keep changes scoped with inline styles; dynamic image via Unsplash; easy to duplicate for more entries.
+Next steps: Replace placeholder text/link with real project details or map over data for multiple blocks.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Zigzag projects + scroll zoom animation
+Code changes: In `src/pages/OurService.jsx`, added `PROJECTS` array and mapped 4 zigzag sections (alternating layout). Implemented scroll-based zoom for project images using a page-scoped scroll handler that scales between 0.96–1.04, with `data-zoom` and inline `transition`.
+Decisions: Page-scoped JS (no global CSS); minimal DOM queries; passive scroll handler.
+Next steps: Fine-tune scale range/timing if you want a stronger/weaker effect.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Build error fix in OurService.jsx
+Code changes: Removed TypeScript-style casts in cleanup (`onScroll as any`) and used standard `removeEventListener` signatures.
+Decisions: Keep file as plain JS/JSX; no TS syntax.
+Next steps: Verify no further parser errors; adjust animation if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: New OurFeed page (3D collage)
+Code changes: Created `src/pages/OurFeed.jsx` with fullscreen black background, perspective 3D scattered images, gentle auto-rotation with mouse parallax, and bottom tabs (VIBES/HIGHLIGHTS/ARTICLES). Added route `/our-feed` in `src/App.jsx`.
+Decisions: Page uses inline styles and Unsplash placeholders; header unchanged.
+Next steps: Optionally point header "Our Feed" menu to `/our-feed` and replace images/content as desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Update menu to navigate to Our Feed page
+Code changes: Updated `src/components/Header.jsx` default menu and `src/components/MinimalistNav.jsx` to link "Our Feed" to `/our-feed`.
+Decisions: Ensure consistent navigation across header variants; no other behavior changed.
+Next steps: Verify navigation from all pages; adjust menu ordering if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed top header layout (FEED + tagline) added
+Code changes: In `src/pages/OurFeed.jsx`, added a white top section with left-aligned `FEED` title and right-aligned tagline “LESS NOISE ✦ MORE SUBSTANCE”. Wrapped the 3D collage in a black section with a top row showing `VIBES` on the left and an explanatory sentence on the right.
+Decisions: Page-scoped inline styles; preserved existing 3D scene and tabs.
+Next steps: Tweak font sizes/spacing to exactly match desired look if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Adjust FEED header spacing
+Code changes: Increased top padding of Our Feed header section from 48px to 72px in `src/pages/OurFeed.jsx` to move “FEED / LESS NOISE ✦ MORE SUBSTANCE” slightly down.
+Decisions: Minimal, page-scoped tweak.
+Next steps: Fine-tune spacing if you want more/less offset.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed page header logo/menu like Our Service
+Code changes: In `src/pages/OurFeed.jsx`, rendered `Header` with `logoSrc` `/assets/Images/Vlt_logo1.png` and page menu (Home, Our Service, Projects, Our Feed, Contact).
+Decisions: Page-scoped header added to match Our Service styling.
+Next steps: If duplicate headers appear due to global header in `App.jsx`, we can remove the global header and render per-page instead.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed Highlights section cleanup
+Code changes: Removed the chip/tag row under the second highlight card in `src/pages/OurFeed.jsx` that displayed “VIBES, HIGHLIGHTS, ARTICLES”.
+Decisions: Minimal and targeted removal; no other layout/content changes.
+Next steps: Confirm visual spacing looks good without the chips; adjust padding if desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Black section with fixed center and rotating image rings
+Code changes: In `src/pages/OurFeed.jsx`, added a new black section featuring a completely stationary blank center and three concentric rotating rings (8/10/12 items) using CSS `rotateY` keyframes and `translateZ(radius)` for even circular distribution.
+Decisions: Kept animation scoped and CSS-driven for smooth performance; center remains static; rings pause on hover.
+Next steps: Tune radii/speeds if desired; replace placeholder images with production assets.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Scroll-driven rotation for circular carousel
+Code changes: Updated the black carousel section in `src/pages/OurFeed.jsx` to rotate rings based on page scroll. Removed autoplay `animation` on rings, added refs and a `requestAnimationFrame` loop that maps scroll progress to ring `rotateY` transforms (inner 360°, middle -270°, outer 180°). Center remains static.
+Decisions: Minimal, page-scoped change; smooth performance using rAF and passive scroll.
+Next steps: Adjust rotation multipliers if you want faster/slower scroll coupling.
+
+Date: 2025-11-01
+Time: N/A
+Topics: Our Service carousel spacing tweak
+Code changes: In `src/pages/OurService.jsx`, reduced 3D carousel radius from 600 to 540 to slightly decrease gaps between rotating cards.
+Decisions: Keep all other carousel params unchanged for consistent animation behavior.
+Next steps: Visually confirm spacing across breakpoints; adjust radius further if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service zigzag section adjustments - image size reduction and "VIEW PROJECT" removal
+Code changes: In `src/pages/OurService.jsx`, reduced zigzag project image flex basis from `520px` to `380px` to decrease image size, and removed all "VIEW PROJECT →" links from all 4 project sections.
+Decisions: Minimal, targeted changes to improve layout proportions; removed redundant navigation elements.
+Next steps: Verify new layout proportions look balanced across all breakpoints.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Home Capabilities section redesign - three-column layout with parallax effects
+Code changes: In `src/pages/Home.jsx`, restructured Capabilities section from 2-column to 3-column grid (image left, moving text center, accordion right). Added parallax scroll effects: left image zooms in only (scale 1 to 1.2) without translation using only scale transform, center text scrolls vertically (300px down) and fades (opacity 1 to 0.2) as it exits, right accordion list remains static. Implemented scroll-based transform calculations using `capabilitiesRef`, scroll progress detection, and state management for imageScale, textTransform, and textOpacity. Fixed text animation to use `translateY` instead of `translateX` for correct vertical movement. Reduced main heading font size from 48px to 36px. Updated parallax logic to trigger only when section is fully in viewport (section top < 0 && bottom > 0), with progress calculated as absolute top / height. Moved descriptive text below image outside animated wrapper so it remains static.
+Decisions: Page-scoped parallax logic; 3 equal columns with 64px gaps; image and text move at different speeds based on scroll progress through section (minHeight 90vh, section padding 100px).
+Next steps: Verify parallax smoothness and responsiveness across breakpoints; test accordion interactions with new layout.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Contact section text fill-back animation with floating 3D icons
+Code changes: In `src/pages/Home.jsx`, replaced Contact section with new layout featuring large promotional text and floating 3D app icons (Photoshop, ChatGPT, monkey icon, S logo). Added text fill-back animation where text transitions from gray (#999) to black (#000) letter-by-letter across all rows based on scroll progress. Implemented scroll-based animation using `contactRef`, linear progress calculation (scrolled / scrollDistance where scrollDistance = viewport height + section height), and `textFillProgress` state. Created `renderAnimatedText()` helper function that combines all text lines into single string, calculates filledLetters count based on global progress, maps over textLines to render each letter with globalIndex calculation, and renders conditional `<br />` between lines. Icons positioned absolutely with perspective 3D transforms and semi-transparent styling. Letter-by-letter animation across all rows provides progressive reveal effect.
+Decisions: Animation triggers when section is in viewport; text fills progressively from left to right, top to bottom as section scrolls through viewport; floating icons provide visual interest without distraction.
+Next steps: Verify animation smoothness; adjust thresholds if needed; test responsiveness across breakpoints.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Footer section redesign - dark theme with logo, navigation, and social links
+Code changes: In `src/components/FlowAnimation.jsx`, completely redesigned footer section to match provided image. Removed scroll animation logic. Added dark green background (#0a2a1a). Created three-column layout: left side with Vulturelines logo (Vlt_logo1.png) and tagline "Vulturelines" in black (#000) with subtitle "With strategic design and Webflow development." in white, right side with EXPLORA navigation column and CONTACT info column. Bottom section includes social media icons (Instagram, LinkedIn, TikTok) with hover effects, copyright text, and legal links. All styling done inline with hover states for interactive elements. Updated tagline to "Vulturelines" with smaller subtitle text. Changed navigation links from Spanish to English: "Our Service, Projects, Work, Our Team, Our Feed, Contact". Replaced Spanish contact info with Vulturelines contact details: Chennai address, +91 9791670504 phone, sutheesh.s@vulturelines.com email. Replaced SVG "H" logo with Vulturelines logo image. Changed background from purple-black to dark green and heading color from orange to black.
+Decisions: Converted to static footer; dark green theme provides strong contrast; black heading provides emphasis; responsive grid layout for navigation sections.
+Next steps: Test responsive behavior on mobile; verify all links work; adjust colors/spacing if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hide MinimalistNav when FlowAnimation footer is in view
+Code changes: In `src/pages/Home.jsx`, added `flowAnimationRef` and `showNav` state. Wrapped FlowAnimation component in div with ref. Added useEffect to detect when FlowAnimation footer enters viewport (when rect.top < window.innerHeight) and hide MinimalistNav by setting showNav to false. Conditionally rendered MinimalistNav based on showNav state using {showNav && <MinimalistNav />}.
+Decisions: Navigation hidden when footer visible for cleaner footer presentation; nav automatically shows/hides based on scroll position.
+Next steps: Test behavior on scroll; verify nav doesn't interfere with footer content.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Increase FlowAnimation footer logo size
+Code changes: In `src/components/FlowAnimation.jsx`, increased logo dimensions from 60x60px to 200x200px for better visibility in footer. Simplified logo structure by removing extra wrapper divs and applying size directly to img element.
+Decisions: Larger logo improves brand presence in footer section; direct sizing ensures proper rendering.
+Next steps: Hard refresh browser to clear cache and see updated logo size.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero page text positioning - moved to left bottom side
+Code changes: In `src/components/HeroThree.jsx`, moved hero text "Experience Excellence with Vulturelines" and "With strategic design and Webflow development." from centered hero-container to new hero-content-bottom div positioned at left bottom. Added CSS class `.hero-content-bottom` with absolute positioning matching right sidebar spacing.
+Decisions: Text positioned at left bottom for better visual balance; maintains existing styling while improving layout.
+Next steps: Verify positioning across all screen sizes.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Comprehensive cross-platform and mobile responsiveness improvements
+Code changes: 
+- Enhanced HTML meta tags in `index.html`: added viewport scaling, theme-color, Apple mobile web app tags, MS tile color, IE compatibility tag for better cross-platform support (Windows, macOS, Linux, iOS, Android).
+- Added responsive styles for `.hero-content-bottom` across all breakpoints (768px, 576px, 420px) in `src/styles/main.css` - converts from absolute to relative positioning on mobile with proper padding and font scaling.
+- Improved mobile hero layout: hero-three uses flexbox with order property on mobile (content-bottom order:1, sidebar order:2, actions order:3) to ensure proper stacking.
+- Added cross-browser vendor prefixes: -webkit- and -ms- prefixes for flexbox, animations, transforms to support older browsers (Safari, IE11, Edge).
+- Enhanced touch interactions: added -webkit-tap-highlight-color, touch-action: manipulation, min-height/width for touch targets (44px minimum) in mobile media queries.
+- Prevented horizontal overflow: added overflow-x: hidden to html and body to prevent horizontal scrolling issues.
+- Added hardware acceleration hints: backface-visibility: hidden, transform: translateZ(0), will-change properties for smoother animations across all browsers.
+- Fixed text overflow: added overflow: hidden, text-overflow: ellipsis to project-name to prevent layout breaks on mobile.
+- Enhanced animation compatibility: added -webkit-keyframes alongside standard @keyframes for slideRightToLeft animation.
+Decisions: Comprehensive approach ensures compatibility across Windows, macOS, Linux, iOS, Android, and all major browsers (Chrome, Firefox, Safari, Edge). Mobile-first responsive design with touch-friendly interactions. Vendor prefixes added for maximum browser compatibility.
+Next steps: Test on actual devices across platforms; verify animations perform smoothly; check for any remaining layout issues on specific screen sizes.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero section height increase - whole screen size slightly increased
+Code changes: In `src/styles/main.css`, increased hero section height from `90vh` to `95vh` for both `height` and `max-height` properties in `.hero-three` class.
+Decisions: Slight increase from 90% to 95% of viewport height makes hero section take up more screen space while maintaining responsiveness.
+Next steps: Refresh browser to see updated hero section size; verify layout proportions remain balanced.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero section height increased to full screen
+Code changes: In `src/styles/main.css`, increased hero section height from `95vh` to `100vh` (full viewport height) for both `height` and `max-height` properties in `.hero-three` class.
+Decisions: Full screen height (100vh) makes hero section occupy entire viewport for maximum visual impact.
+Next steps: Refresh browser to see full-screen hero section; verify all content remains visible and accessible.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service rotating carousel - full structure view on mobile responsive
+Code changes: 
+- In `src/pages/OurService.jsx`, added mobile detection using `isMobile` and `isSmallMobile` states with resize listener. Updated carousel to use responsive values: radius reduced to 220px on small mobile (≤480px), 280px on mobile (≤768px), 540px on desktop; perspective adjusted to 1500/1800/3500 respectively; container width set to 100vw on mobile, height set to auto; card sizes reduced progressively (small mobile: 160-240px width, 220-320px height; mobile: 200-280px width, 280-390px height; desktop: 280-410px width, 390-540px height); added responsive margin calculations.
+- In `src/styles/main.css`, enhanced mobile-specific CSS rules for `.service-carousel-3d` class and carousel wrapper divs: added overflow: visible, full viewport width (100vw), margin: 0, left/right: 0 positioning; updated selector to target `div[style*="perspective"]` to catch dynamic perspective values; added `.our-service-page` class rules to ensure page container allows overflow on mobile (768px and 480px breakpoints).
+Decisions: Progressive radius reduction (220px/280px/540px) ensures all cards visible across all mobile screen sizes; adjusted perspective and container dimensions provide full structure view without clipping; overflow visible on page and carousel containers ensures cards extending beyond viewport are shown; smaller card sizes on very small screens maintain visibility.
+Next steps: Test on actual mobile devices; verify all cards remain visible during rotation across all screen sizes; verify horizontal scrolling doesn't occur unintentionally.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service carousel cards - square shape on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, updated carousel card dimensions to be square on mobile devices: height now matches width for both small mobile (≤480px) and mobile (≤768px) breakpoints. Changed height values from different clamp ranges to match width values: small mobile height changed from `clamp(220px, 48vw, 320px)` to `clamp(160px, 35vw, 240px)`; mobile height changed from `clamp(280px, 52vw, 390px)` to `clamp(200px, 38vw, 280px)`. Updated marginTop calculations to use same values as marginLeft for proper centering. Desktop cards remain rectangular with original proportions.
+Decisions: Square cards on mobile provide better visual consistency and fit mobile screens more effectively; maintains aspect ratio that works well for touch interactions.
+Next steps: Test carousel rotation with square cards on mobile; verify cards remain visible and properly centered during rotation.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service header section - move down on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, added responsive padding adjustments for the "OUR SERVICES" heading and tagline section: increased paddingTop from `2em` to `4em` on mobile (≤768px), and paddingBottom from `2em` to `3em` on mobile. Desktop remains at original `2em 0` padding.
+Decisions: Increased top padding pushes header content down on mobile for better spacing and visual hierarchy, preventing content from appearing too close to the top navigation.
+Next steps: Verify spacing looks good on various mobile devices; adjust padding values if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service header to carousel spacing - reduce gap on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, reduced spacing between header section and carousel cards on mobile: changed paddingBottom of header div from `3em` to `1em` on mobile, and reduced tagline bottom margin from `2.5em` to `1em` on mobile. Desktop spacing remains unchanged (paddingBottom: `2em`, tagline margin: `0.4em 0 2.5em`).
+Decisions: Decreased spacing creates tighter layout on mobile while maintaining adequate separation; reduces excessive white space between header and carousel for better visual flow.
+Next steps: Verify spacing looks balanced on mobile devices; fine-tune if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive - board of directors images show before animations process
+Code changes: In `src/pages/OurTeam.jsx`, added mobile detection state (`isMobile`) and section visibility tracking (`isSectionInView`). Updated board members slider to hide images initially on mobile (opacity: 0) and only show them when section is in view AND scroll progress > 0 (animation has started). Added smooth fade-in transition for opacity on mobile. In `src/styles/main.css`, set initial opacity to 0 for `.board-members-slider` on mobile breakpoints (≤768px and ≤480px) with transition properties for smooth fade-in.
+Decisions: Images hidden initially on mobile to prevent showing before animations; fade-in only triggers when scroll animation begins processing; desktop behavior unchanged.
+Next steps: Test on actual mobile devices; verify images fade in smoothly when scrolling to board section; adjust timing if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Board of directors section - first image stuck, then scroll image by image
+Code changes: In `src/pages/OurTeam.jsx`, modified scroll progress calculation to implement sticky first image behavior. Added `stickyThreshold` of 0.2 (20% of scroll) where first image stays centered (translateX = 0). After threshold, scroll progress maps to card indices (0 to totalCards-1) for image-by-image scrolling. Added `sliderRef` and `cardWidth` state to measure actual card width dynamically (including gap). Changed transform from percentage-based to pixel-based translation (`translateX(-${scrollProgress * cardWidth}px)`) for precise image-by-image scrolling. Card width measurement happens on mount, resize, and first scroll to ensure accuracy across breakpoints.
+Decisions: First image remains stuck/centered when section first enters viewport; after 20% scroll threshold, images scroll one by one progressively; pixel-based translation ensures accurate positioning; dynamic card width measurement adapts to screen size changes.
+Next steps: Test on different screen sizes; verify first image stays centered initially; confirm smooth image-by-image progression after threshold.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Excellence section - text quietly increases size on scroll
+Code changes: In `src/pages/Home.jsx`, added `excellenceRef` and `excellenceScrollProgress` state to track scroll progress through excellence section. Added scroll listener that calculates progress from 0 to 1 as section moves through viewport. Applied scroll-based size increase to subtitle (15% max increase), description (12% max increase), and buttons (8% scale increase) using inline styles with smooth transitions. Size increases gradually and quietly as user scrolls through the section.
+Decisions: Subtle, gradual size increase creates quiet growth effect; different increase percentages for different elements (subtitle 15%, description 12%, buttons 8%) for visual hierarchy; smooth transitions ensure non-jarring animation.
+Next steps: Test scroll behavior; verify size increases feel natural and not too aggressive; adjust percentages if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive excellence section - center circular texts and numbers
+Code changes: In `src/styles/main.css`, added mobile-specific styles to center circular texts and numbers in the excellence section. For mobile breakpoints (≤768px, ≤576px, ≤480px): removed `translateX(40px)` offset from `.emblem-number` and `.emblem-text` using `transform: translateX(0) !important`; centered `.circular-text-svg` by setting `left: 0` and `top: 0` (removed 40px offset); added `margin: 0 auto` to `.circular-emblem` for horizontal centering; created new mobile-specific animations `numberAppearMobile` and `textAppearMobile` that use `translateX(0)` instead of `translateX(40px)`; updated `transform-origin` for `.rotating-group` to `50% 50%` on mobile for proper rotation center.
+Decisions: Mobile-specific overrides ensure centered alignment on mobile devices while preserving desktop layout with 40px offset; separate mobile animations maintain smooth appearance without affecting desktop behavior.
+Next steps: Test on actual mobile devices; verify circular text rotation and number/text centering; adjust if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Statistics section mobile responsive - apply desktop background properties
+Code changes: In `src/styles/main.css`, added desktop background properties to mobile responsive styles for `.statistics-section`. Added `background-color: #ffffff`, `position: relative`, `overflow: hidden`, `display: flex`, `align-items: center`, and `justify-content: center` to both mobile breakpoints (≤768px and ≤480px) to match desktop view background styling.
+Decisions: Mobile responsive views now match desktop background styling for consistency across all screen sizes; white background and flexbox centering ensure proper layout on mobile devices.
+Next steps: Verify statistics section background appears correctly on mobile devices; test layout with new flex properties.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Extracted project showcase styles into dedicated stylesheet
+Code changes: Created `src/styles/projectShowcase.css` for project showcase rules, removed the duplicated selectors from `src/styles/main.css`, and imported the new stylesheet in `src/components/ProjectSection.jsx`.
+Decisions: Keep project showcase styling scoped via component import while trimming global CSS to avoid duplication and ease future edits.
+Next steps: Verify the project showcase renders correctly with the new stylesheet and ensure production build picks up `projectShowcase.css`.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Home services animation update
+Code changes: Adjusted the services scroll logic in `src/pages/Home.jsx` so the first card remains fixed on entry while the remaining cards slide up sequentially over it. No CSS changes required.
+Decisions: Keep animation handling in JS for precise scroll segment control; first card snaps in as the section enters, subsequent cards follow one-by-one.
+Next steps: Manually verify the scroll sequence feels seamless across breakpoints and tweak segment timing if needed.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Excellence section fullscreen pin
+Code changes: Wrapped the excellence block in a new `excellence-wrapper`, added pinning logic in `src/pages/Home.jsx`, and introduced corresponding styles in `src/styles/main.css` so the section locks to the viewport before handing off to Services.
+Decisions: Use JS-driven pin detection to toggle between default, pinned, and post-pinned layout states while keeping the content interactive.
+Next steps: Scroll through the transition from Excellence into Services across devices to confirm the pin/release timing feels right.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: CTA pattern visibility fix
+Code changes: Tweaked the `team-cta-pattern` gradients and the overlay opacity in `src/styles/main.css` so the orange dot field is visible behind the card while retaining the dark vignette.
+Decisions: Keep the layered gradient approach; lighten the overlay instead of removing it to preserve depth.
+Next steps: Hard-refresh the page to clear cached CSS and confirm the background now matches the mock.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin panel scaffold
+Code changes: Added `/admin` route in `src/App.jsx`, created admin pages (`src/pages/admin/AdminApp.jsx`, `AdminLogin.jsx`, `AdminDashboard.jsx`) and supporting styles `src/styles/admin.css`. Implemented mock credential check (admin@vulturelines.com / admin123) and dashboard cards for Home, Our Service, and Our Feed.
+Decisions: Keep authentication mock client-side for now; modularize admin assets under dedicated folder for future expansion.
+Next steps: Replace mock auth with real API integration and wire dashboard cards to actual management views when available.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin Our Service manager
+Code changes: Updated admin app state handling to support view switching, added `AdminServiceManager` component with forms for service cards, 3D carousel slots, and project showcases, wired dashboard navigation to open the manager, and extended `admin.css` with new form/preview styles.
+Decisions: Keep data client-side with console output for now; provide previews and save placeholder until backend integration.
+Next steps: Connect save action to API/storage and synchronize with live Our Service page data.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin service manager enhancements
+Code changes: Expanded `AdminServiceManager.jsx` to support six service cards with keyword entry and image uploads, extended carousel slots to six items with keywords/uploads, and updated `admin.css` with upload and tag preview styling.
+Decisions: Store uploaded images as Data URLs for now; parse keywords via comma separation for fast entry.
+Next steps: Hook the admin save action to persistent storage and pipe data into the live Our Service page.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin Our Feed manager
+Code changes: Added `AdminFeedManager.jsx` with editors for 18 feed cards, carousel imagery, and highlight stories; wired `/admin` view switching in `AdminApp.jsx`; updated `admin.css` with preview grids for feed and carousel items.
+Decisions: Keep data client-side with console logging until backend integration; mirror service manager UX for consistency.
+Next steps: Persist admin updates and connect to the live Our Feed data sources.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin upload reset
+Code changes: Cleared file inputs after processing uploads in `AdminServiceManager.jsx` and `AdminFeedManager.jsx` to prevent duplicate-selection issues.
+Decisions: Reset the underlying `<input>` value inside the FileReader `onload` callback to allow re-uploading the same asset without extra steps.
+Next steps: None; ready for backend integration when available.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin feed carousel sync
+Code changes: Updated `AdminFeedManager.jsx` so feed card edits automatically sync titles/images to the corresponding carousel slots, eliminating the need to upload assets twice.
+Decisions: Reuse feed card data for carousel labels/images with sensible fallbacks while keeping manual overrides possible.
+Next steps: Consider adding a manual “restore defaults” action if custom carousel content is desired later.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin feed form simplification
+Code changes: Removed the separate carousel form from `AdminFeedManager.jsx`, relying solely on feed card inputs to drive carousel imagery/text. Minor copy updates explain the automatic linkage.
+Decisions: Keep carousel state in sync behind the scenes while presenting a single upload flow for clarity.
+Next steps: If future customization is needed, reintroduce a dedicated carousel editor or add advanced toggles.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Board section responsive sizing
+Code changes: Adjusted `.board-section` and related styles in `src/styles/main.css` to use clamp-based heights, flexible card widths, and responsive image sizing so the Board of Directors area fits comfortably on screen.
+Decisions: Keep the scroll animation intact while letting the layout breathe across desktop and mobile.
+Next steps: Verify the slider still measures card widths correctly and tweak clamp ranges if further balancing is needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Board text scaling
+Code changes: Reduced Board of Directors name/position typography in `src/styles/main.css` using clamp-based sizes and updated breakpoint overrides so text below portraits stays compact on smaller screens.
+Decisions: Allow text to scale fluidly while preserving readability.
+Next steps: Review on tablet/mobile to ensure hierarchy still feels right; fine-tune clamp bounds if necessary.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: MinimalistNav service routing
+Code changes: Updated `src/components/MinimalistNav.jsx` so the “OUR SERVICE” button uses the `/our-service` route, triggering the circle transition and navigating straight to the services page instead of scrolling to a hash.
+Decisions: Keep other items unchanged; rely on existing route map to highlight the active state.
+Next steps: Verify the transition animation still plays and adjust other menu items if similar direct routing is desired.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Header parity across project/team/contact views
+Code changes: Imported `Header` into `src/pages/Work.jsx`, `OurTeam.jsx`, `ProjectDetail.jsx`, and `Contact.jsx`, rendering it ahead of `MinimalistNav` with the same logo as the services page for consistent branding.
+Decisions: Keep the minimalist footer nav in place for scroll interactions while adding the top header for route consistency.
+Next steps: Confirm header spacing looks correct on each page; adjust page-specific padding if needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Team CTA removal
+Code changes: Deleted the “Join Our Team / View Open Positions” block from `src/pages/OurTeam.jsx` so the page transitions directly from values into the director modal/footer.
+Decisions: Keep styling in case the CTA returns later; no other sections affected.
+Next steps: Verify spacing after the values grid feels balanced; adjust padding if a gap appears.
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Contact page green background
+Code changes: Adjusted `src/styles/main.css` so `.contact-page-dark` and `.location-section` now use rich green tones (`#1b402f` / `#1f4d38`) instead of the previous teal shades.
+Decisions: Keep typography/layout as-is; only the base colors changed.
+Next steps: Confirm contrast feels good across the contact page; tweak shades further if a lighter/darker green is preferred.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Flow footer color alignment
+Code changes: Set `FlowAnimation` wrapper background and `.location-section` color to the same dark green (`#1b402f`) so the contact page and footer share one continuous tone.
+Decisions: Removed the gradient/backdrop filters to keep the hue consistent; left other styling untouched.
+Next steps: Review the footer to ensure content remains readable; adjust text accents if needed.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase card width reduction
+Code changes: Narrowed `.project-mockup` clamps in `src/styles/projectShowcase.css` to `clamp(280px, 24vw, 340px)` wide and `clamp(380px, 32vw, 470px)` tall for slimmer cards.
+Decisions: Keep all offsets/animations unchanged for a minimal visual tweak.
+Next steps: Verify the projects arch still has comfortable spacing across breakpoints.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects rightmost card orientation tweak
+Code changes: In `src/components/ProjectSection.jsx`, set the far-right card rotation to 0° and raised its z-index to 6 so it faces forward and appears above adjacent cards.
+Decisions: Leave existing offsets untouched for a minimal, targeted adjustment.
+Next steps: Visual pass on the projects arch to confirm the new orientation doesn’t cause overlap or spacing issues.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch layout update
+Code changes: 
+- `src/components/ProjectSection.jsx`: drove card offsets/rotations via data and CSS variables to position five cards symmetrically in an arch.
+- `src/styles/projectShowcase.css`: refactored transforms to consume CSS custom properties and tuned responsive translations for the arch arrangement.
+Decisions: Keep fallback class defaults while letting data override placement; retain existing project card content.
+Next steps: Preview the Home projects section across breakpoints to ensure spacing/overlaps look correct; fine-tune offsets if needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch vertical alignment tweak
+Code changes: Raised each card’s `offsetY` in `src/components/ProjectSection.jsx` by ~30px so the arch sits slightly lower while preserving the established tilt angles.
+Decisions: Apply a uniform downward shift via data to avoid touching CSS structure.
+Next steps: Give the home projects area a quick pass on multiple viewports to confirm the lowered arch doesn’t crowd adjacent sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects six-card arch update
+Code changes: Added a sixth project entry in `src/components/ProjectSection.jsx`, introduced clamp-based offsets so all cards scale responsively, and updated `src/styles/projectShowcase.css` to support the new symmetry classes and animation timing.
+Decisions: Keep all positioning data-driven with CSS variable fallbacks for graceful scaling; reuse existing mockup types for consistency.
+Next steps: Review the six-card arch on desktop/tablet/mobile to confirm spacing and overlaps remain balanced; fine-tune clamp ranges if any breakpoint feels cramped.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch width expansion
+Code changes: Increased horizontal clamp ranges for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the arch spreads wider without altering tilt angles or vertical alignment.
+Decisions: Adjust widths purely via data/CSS variables to preserve animation behavior.
+Next steps: Give the projects arch a visual pass to ensure the wider spacing still feels cohesive across breakpoints; tweak ranges further if outer cards come too close to container edges.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card sizing + wider arc
+Code changes: Reduced base card dimensions with `clamp` sizing and pushed every card’s horizontal offsets further out in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the six-card arc feels airier without changing tilt angles.
+Decisions: Keep vertical offsets untouched to maintain arch height; lean on CSS variables for responsive scaling.
+Next steps: Review the section visually to ensure the smaller cards remain readable and the extended width doesn’t collide with container edges on large displays.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center card drop
+Code changes: Lowered the two inner mobile mockups and two adjacent cards by adjusting their `offsetY` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, leaving the outer cards untouched so the arch dips slightly deeper in the middle.
+Decisions: Modify data and CSS variables together to keep responsiveness consistent.
+Next steps: Check the home projects arch to confirm the lowered middle cards still clear surrounding sections and maintain the intended curvature.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects deeper center curve
+Code changes: Further decreased the four middle cards’ vertical clamp ranges in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the arch drops a little more through the center while outer cards remain unchanged.
+Decisions: Adjust offsets via shared CSS variables for consistent responsiveness.
+Next steps: Give the projects arch a quick visual review to ensure the deeper center still avoids overlap with neighboring sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair drop
+Code changes: Lowered only the two innermost cards by easing their `offsetY` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, leaving the adjacent cards at previous heights.
+Decisions: Keep changes scoped to the center pair to fine-tune the arch profile without affecting the outer curve.
+Next steps: Refresh the projects arch to confirm the center pair’s new position flows smoothly with the remaining cards.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair deeper drop
+Code changes: Nudged just the two central cards further down by loosening their `offsetY` clamp ranges again in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`.
+Decisions: Continue tweaking only the inner pair to refine the arch shape while keeping outer spacing intact.
+Next steps: Preview the section to verify the deeper center alignment feels intentional and doesn’t crowd surrounding content.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair final adjustment
+Code changes: Lowered the two innermost cards once more by updating their `offsetY` clamps in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, allowing the arch’s midpoint to sit closer to the baseline.
+Decisions: Keep the change limited to those cards so the outer curvature remains steady.
+Next steps: Reload the home projects section to confirm the new midpoint height aligns cleanly with surrounding sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair baseline alignment
+Code changes: Relaxed the innermost cards’ `offsetY` clamps again in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so they sit slightly lower, nearing the arch baseline while the outer cards stay untouched.
+Decisions: Continue modifying only the center pair for fine-grained curvature control.
+Next steps: Preview the section to ensure the lowered midpoint doesn’t collide with the footer/neighboring content and still reads cohesively.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair spacing
+Code changes: Pulled the two innermost cards closer together by tightening their horizontal `offsetX` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, keeping their lowered height from earlier tweaks.
+Decisions: Limit adjustments to the inner pair to refine the center emphasis without disturbing the outer arc.
+Next steps: Check the arch visually so the tighter center spacing still feels balanced and avoids overlap.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card width increase
+Code changes: Expanded the card size clamps in `src/styles/projectShowcase.css` so each card renders slightly wider/taller while maintaining the existing offsets and arch structure.
+Decisions: Keep spacing unchanged for now; rely on clamp scaling to stay responsive across breakpoints.
+Next steps: Refresh the section to confirm the larger cards have adequate spacing and adjust offsets if any overlap appears.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card size bump
+Code changes: Increased the `clamp` ranges for `.project-mockup` width/height in `src/styles/projectShowcase.css` to make each card a bit bigger while preserving offsets and layout.
+Decisions: Delay offset changes until after visually confirming spacing with the new size.
+Next steps: Preview the projects arch to verify the larger cards still fit comfortably and adjust positioning if needed.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase card height increase
+Code changes: Raised `.project-mockup` height clamp in `src/styles/projectShowcase.css` to `clamp(420px, 34vw, 540px)` while keeping the new narrower width.
+Decisions: Preserve all translate/rotate settings so only the card proportions shift.
+Next steps: Recheck the projects arch to confirm taller cards still clear neighboring sections without overlap.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch width tightening
+Code changes: Reduced horizontal `--card-translate-x` clamps for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, pulling the arc closer to center while leaving mobile overrides untouched.
+Decisions: Mirror clamp values between data and CSS to keep behavior in sync; no changes to rotation or height.
+Next steps: Visual sweep across desktop/tablet breakpoints to ensure the tighter layout still reads cleanly.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase card height boost
+Code changes: Increased `.project-mockup` height clamp in `src/styles/projectShowcase.css` to `clamp(460px, 38vw, 600px)` so desktop/tablet cards appear taller while mobile overrides remain unchanged.
+Decisions: Leave width and transform variables untouched for a simple proportion update.
+Next steps: Review the arch spacing to confirm the taller cards don’t crowd adjacent sections.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch width expansion + larger span
+Code changes: Widened desktop `--card-translate-x` clamps for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, spreading the arch further across the section without altering card size.
+Decisions: Mirror clamp values between data and CSS; keep rotations and mobile overrides unchanged.
+Next steps: Visual pass to ensure the expanded arch still fits within the section and doesn’t clip near container edges.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Project cards image-only layout
+Code changes: Updated `src/components/ProjectSection.jsx` to render each project card as a single full-bleed image (with placeholder fallback) and added new wrapper styles in `src/styles/projectShowcase.css` so the images fill the card and inherit the arch transforms.
+Decisions: Remove all previous text/mockup chrome while leaving transforms and animation logic intact for minimal behavioral change.
+Next steps: Visual pass to confirm images cover each card correctly on desktop/mobile and that placeholders appear if any image is missing.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch one-way ripple
+Code changes: Simplified the showcase animation in `src/components/ProjectSection.jsx` so the wave now travels from left to right on one cycle and right to left on the next, eliminating the previous double-hit behavior. Updated the per-card sequencing math to respect the single-direction pass.
+Decisions: Preserve existing amplitudes and easing; only adjust the timing logic to remove the double-touch per side.
+Next steps: Verify the motion feels intentional—left sweep, settle, then right sweep—and tune the period or spacing if you want a slower/faster pass.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Projects horizontal hits only
+Code changes: Removed the vertical lift component from the project showcase animation in `src/components/ProjectSection.jsx`, keeping horizontal motion and rotations while forcing translate-y to stay at zero during each hit.
+Decisions: Maintain the existing easing and lateral offsets; strip vertical swing for a cleaner glide.
+Next steps: Confirm the animation now feels level across the cycle and adjust horizontal spacing if needed.
+
+Date: 2025-11-14
+Time: N/A
+Topics: Excellence → Services scroll-driven transition with stacked imagery
+Code changes: In `src/pages/Home.jsx`, replaced the four independent service progress states with a single scroll timeline, introduced responsive detection, and drove both the left image overlays and the right content elevator from a shared `SERVICES` data array. Updated `src/styles/main.css` so the services section height is controlled via CSS variables, added a `.services-content-track`, and refreshed mobile overrides to fall back to stacked content while keeping the desktop pin/elevator behavior.
+Decisions: Keep services content data-driven for upcoming admin wiring; limit the elevator animation to desktop/tablet while letting mobile see natural stacking with the same imagery.
+Next steps: Manually verify the Excellence → Services handoff on multiple breakpoints to confirm the image overlays and elevator motion feel smooth; adjust scroll thresholds if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero page image slide animation improvements - slower speed and image preloading
+Code changes: 
+- In `src/styles/main.css`: Increased hero slide animation duration from 1.1s to 1.8s, then further increased to 2.5s for smoother, clearer transitions. Enhanced `heroSlideIn` keyframes to include fade-in effect (opacity 0 → 0.3 at 20% → 1 at 100%). Enhanced `heroSlideOut` keyframes to include fade-out effect (opacity 1 → 0.5 at 80% → 0 at 100%). Added smooth opacity transition to `.hero-bg-layer` for better image rendering.
+- In `src/components/HeroThree.jsx`: Added image preloading functionality using `useEffect` hook that loads all project images before animations start to prevent broken images during transitions. Added `imagesLoaded` state to track which images have successfully loaded. Updated transition timeout from 1800ms to 2500ms to match new animation duration. Increased auto-rotate interval from 5000ms to 6500ms to provide better timing with slower animation. Added conditional opacity handling to hide images only if they fail to load.
+Decisions: Slower animation (2.5s) provides clearer, more visible and relaxed transitions. Image preloading prevents broken image display during animations. Fade effects make transitions smoother and more professional. Auto-rotate timing adjusted to match slower animation speed for better user experience.
+Next steps: Test hero section animation smoothness across different network conditions; verify images load properly on first visit; confirm animation speed feels appropriate.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Comprehensive mobile responsive design implementation for all pages
+Code changes: 
+- In `src/styles/main.css`: Added comprehensive mobile responsive styles covering all screen sizes from 320px to 991px. Created breakpoints for: Extra Small Mobile (320px-374px), Small Mobile (375px-479px), Standard Mobile (480px-767px), and Tablet Portrait (768px-991px). Added universal mobile fixes section that applies to all mobile devices (max-width: 991px) including: horizontal scroll prevention, container width constraints, header fixes, touch-friendly button sizes (44px minimum), responsive typography using clamp(), image responsiveness, text overflow prevention, grid layouts stacking to single column, flex containers converting to column layout, form field responsiveness, modal/dialog sizing, and page-specific fixes for Home, Our Service, Our Feed, Our Team, Work, Contact, and Project Detail pages. Added landscape orientation support and high DPI display optimizations. Added print styles to hide navigation elements.
+Decisions: Comprehensive mobile-first approach ensures site works perfectly on all mobile devices from smallest (320px) to tablets (991px). Universal fixes prevent common mobile issues like horizontal scrolling, overflow, and touch target sizing. Page-specific optimizations ensure each page renders correctly on mobile. Responsive typography and spacing use clamp() for fluid scaling across all screen sizes.
+Next steps: Test on actual mobile devices across different screen sizes (iPhone SE, iPhone 12/13/14, Samsung Galaxy, iPad); verify touch interactions work smoothly; check landscape orientation; test on various browsers (Safari, Chrome, Firefox mobile).
+
+Date: 2025-01-27
+Time: N/A
+Topics: Circle transition animation mobile responsive fix - full color fill animation not working properly on mobile
+Code changes:
+- In `src/components/CircleTransition.jsx`: Enhanced circle size calculation to use viewport diagonal with 2x multiplier (increased from 1.5x) to ensure full screen coverage on all mobile devices. Added minimum circle size of 2000px to guarantee coverage. Improved viewport calculation to handle edge cases with fallbacks. Added orientation change listener for mobile devices. Updated circle size recalculation on each navigation event. Increased reset delay from 1000ms to 1200ms for better mobile compatibility. Added transform origin properties with vendor prefixes for cross-browser support. Changed container to use dynamic viewport units (100dvw/100dvh) for proper mobile rendering.
+- In `src/styles/main.css`: Added comprehensive mobile-specific CSS rules for `.circle-transition` and `.circle-transition-inner` classes. Added fixed positioning with !important flags to ensure proper layering. Added mobile breakpoints (≤768px and ≤480px) with specific viewport handling using dvw/dvh units. Added hardware acceleration hints (backface-visibility, transform: translateZ(0)) for smoother animations on mobile. Added min-width/min-height constraints for small screens.
+- In `src/utils/navigation.js`: Enhanced touch event handling to support both mouse and touch events. Added support for `touches` and `changedTouches` arrays for proper mobile touch position detection. Added fallback position calculation using viewport dimensions when touch position is unavailable.
+Decisions: Circle transition now properly covers full screen on mobile devices by calculating size based on viewport diagonal. Dynamic viewport units (dvw/dvh) ensure proper rendering on mobile browsers that adjust viewport on scroll. Touch event handling ensures circle animation starts from correct touch position on mobile devices. Increased circle size multiplier and minimum size guarantee full coverage even on large mobile devices in landscape mode.
+Next steps: Test navigation from mininavbar and header menu on actual mobile devices; verify circle animation fully covers screen during transition; test on various mobile browsers (Safari iOS, Chrome Android); verify animation works correctly in both portrait and landscape orientations.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hamburger icon display only in hero header section for all pages
+Code changes:
+- In `src/components/Header.jsx`: Added `isHeroInView` state to track when hero section is visible. Implemented scroll-based detection that checks if hero section is in viewport based on current page route. Added `useLocation` hook to detect route changes. For Home page, detects `.hero-three`; for Work/Project Detail pages, detects `.project-hero` or `.work-hero`; for Our Team page, detects `.team-hero`; for Contact, Our Service, and Our Feed pages, uses scroll position (shows hamburger when scrollY < 30% of viewport height). Hero section is considered in view when bottom > 20% of viewport and top < 80% of viewport. Added scroll and resize event listeners with passive flag for performance. Added timeout delays (100ms and 300ms) to ensure DOM is ready after route changes. Applied `hero-in-view` or `hero-out-of-view` classes to hamburger button based on hero visibility state.
+- In `src/styles/main.css`: Added `.nav-circle-btn.hero-out-of-view` class to hide hamburger icon (opacity: 0, visibility: hidden, pointer-events: none) with smooth transition when hero section is out of view. Added `.nav-circle-btn.hero-in-view` class to show hamburger icon (opacity: 1, visibility: visible, pointer-events: auto) when hero section is in view. Ensured overlay open state takes priority over hero visibility by adding specific rules for `.nav-overlay-open ~ .nav-actions .nav-circle-btn` with both hero classes. Added mobile-specific rules (max-width: 991px) to ensure hero visibility classes work on mobile devices.
+Decisions: Hamburger icon now only displays when user is viewing the hero header section, providing cleaner UI when scrolled past hero. Different detection strategies for different page types: specific hero section detection for pages with dedicated hero sections (Home, Our Team, Project Detail), scroll position-based detection for pages without specific hero sections (Our Service, Our Feed, Contact, Work). Smooth transitions (0.3s ease) provide polished user experience. Overlay open state maintains priority to ensure menu functionality works correctly.
+Next steps: Test hamburger icon visibility on all pages across different screen sizes; verify smooth transitions when scrolling into/out of hero sections; test on mobile devices to ensure hero detection works correctly; verify hamburger icon appears on page load when hero is in view.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hamburger icon fixed position - only visible in hero section, doesn't move on scroll
+Code changes:
+- In `src/styles/main.css`: Removed `transform: scale()` from `.nav-circle-btn.hero-out-of-view` and `.nav-circle-btn.hero-in-view` classes to ensure hamburger icon stays in fixed position without any visual movement. Hamburger icon now only changes opacity and visibility when hero section is in/out of view, maintaining its fixed position (position: fixed !important, top: 0.75rem, right: 1.25rem) at all times. Removed transform scale from overlay open state as well. Removed transform scale from `.nav-circle-btn:hover` to prevent any movement on hover. Updated transition property from `all 0.3s ease` to explicit properties (opacity, visibility, background, border-color) to prevent animating position or transform. Added comments clarifying that hamburger stays in fixed position like logo, only visibility changes. Mobile responsive rules also updated to ensure no transform on mobile devices. Hamburger icon behaves like logo - fixed position that doesn't move on scroll, only visibility changes based on hero section visibility.
+Decisions: Hamburger icon maintains fixed position (doesn't move on scroll) and only visibility changes when scrolling into/out of hero section. No transform animations to prevent any visual movement or position changes. Smooth opacity and visibility transitions (0.3s ease) provide polished user experience. Fixed positioning maintained across all breakpoints with !important flags. Hamburger icon position matches logo behavior - completely static position with only visibility/opacity changes.
+Next steps: Test hamburger icon stays fixed on scroll across all pages; verify it only appears when hero section is in view; test on mobile devices to ensure fixed positioning is maintained; verify smooth fade in/out transitions without any position movement.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hamburger icon positioned like logo - sticky on top with header
+Code changes:
+- In `src/styles/main.css`: Changed hamburger icon from `position: fixed` to `position: relative` to match logo positioning behavior. Updated `.nav-actions .nav-circle-btn` from `position: fixed !important` with `top: 0.75rem, right: 1.25rem` to `position: relative !important` (removed top/right positioning). Updated base `.nav-circle-btn` class from `position: fixed` to `position: relative`. Updated all mobile breakpoints (max-width: 991px, 768px, 480px) to use `position: relative` instead of `position: fixed`, removing all `top` and `right` positioning values. Hamburger icon now positioned like logo - moves with header instead of being fixed to viewport. Updated comments to reflect "positioned like logo - sticky on top with header" behavior.
+Decisions: Hamburger icon now behaves exactly like logo - positioned relative to header and moves with it. On desktop, header is `position: absolute` so hamburger moves with header. On mobile, header is `position: fixed` so hamburger sticks with header at top. Hamburger icon only displays when hero section is in view, maintaining visibility-based behavior while positioning matches logo. No transform animations, only opacity and visibility transitions.
+Next steps: Test hamburger icon moves with header like logo across all pages; verify it sticks on top with header on mobile; test hero visibility detection still works correctly; verify smooth fade in/out when scrolling into/out of hero sections.
+
+Date: 2025-11-22
+Time: 01:00:52
+Topics: Our Service page cards redesign - dark white background with modern layered aesthetic
+Code changes:
+- In `src/pages/OurService.jsx`: Updated service carousel cards with comprehensive redesign for contemporary creative studio vibe. Changed card background from dark colors (`#111` on desktop, `#808080` on mobile) to dark white (`#f5f5f5`) for modern, clean aesthetic. Enhanced drop shadows with layered multi-shadow approach (4px, 10px, 20px, 30px depth layers) using rgba(0,0,0,0.08-0.15) for sophisticated depth and modular feel. Updated typography for high contrast: changed text colors from white to dark (`#1a1a1a` for keywords, `#4a4a4a` for copyright), improved font weights (700 for keywords, 500 for copyright), enhanced letter spacing (1.2px for keywords, 0.4px for copyright), added system font stack (`system-ui, -apple-system, "Segoe UI", sans-serif`), added subtle text shadows for clarity on images. Updated VLogo component fill from white to `#1a1a1a` for visibility on light background. Adjusted image styling: changed filter from `brightness(0.85)` to `brightness(1.02) saturate(1.05)` for enhanced visuals on light background, updated overlay gradient from dark (rgba(0,0,0,0.15-0.3)) to subtle light gradient (rgba(255,255,255,0.03) to rgba(0,0,0,0.06)) maintaining image clarity. Added radial gradient backdrop for VLogo visibility on varied images. Improved spacing: increased bottom padding from 18px to 24px, left/right padding from 26/22px to 32/28px, increased gap between keywords from 2px to 4px. Added `pointerEvents: 'none'` to overlay, `display: 'block'` to keyword spans, responsive font sizing for mobile breakpoints.
+Decisions: Dark white background (#f5f5f5) provides modern, clean foundation for creative studio aesthetic. Layered drop shadows create depth and modular, engaging design with contemporary feel. High-contrast dark text on light background ensures excellent readability and visual hierarchy. Clean typography with system fonts and refined spacing creates professional, modern look. Subtle image enhancements and overlays maintain image quality while working with light background. Overall design achieves high-contrast visuals, clean typography, clear section hierarchy, and modern layered aesthetic with drop shadows for depth as requested.
+Next steps: Verify service cards render correctly across all breakpoints (desktop, tablet, mobile); test 3D carousel rotation with new light background; confirm text readability on all images; verify drop shadows provide appropriate depth without being too heavy; test on various browsers for consistency.
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase pendulum stack animation
+Code changes: Rebuilt `src/components/ProjectSection.jsx` to move six project cards through a five-slot queue so one card stays just off-screen and swings in from alternating sides. Added slot presets, swing timers, and per-card delay variables to create the requested pendulum-style hits. Updated `src/styles/projectShowcase.css` with the new stacked layout (narrower stage width, deeper shadows, scale-aware transforms, sequential transition delays, and refreshed image wrapper styling).
+Decisions: Keep the project data array as-is but let JS control positions dynamically for responsiveness. Let the pendulum loop automatically with CSS delays providing the one-by-one impact feel; no manual controls for now.
+Next steps: Manually verify the new animation timing and overlaps across desktop and small breakpoints; tweak slot presets if any card clips the viewport edges.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger icon offset
+Code changes: In `src/styles/main.css`, added breakpoint-specific `margin-top`/`margin-right` offsets for `.nav-circle-btn` at max-width 768px, 576px, and 420px so the hamburger button sits slightly higher and closer to the screen edge on phones while leaving desktop/tablet placement untouched.
+Decisions: Keep the button positioned relative to the header (no transforms) and rely on negative margins for subtle positional tweaks that respect the existing “moves with the logo” requirement.
+Next steps: Verify the new offsets on common mobile widths (768, 576, 420) to ensure the button remains fully visible and doesn’t collide with other header elements.
+
+Date: 2025-11-24
+Time: 16:34:33
+Topics: Mobile hamburger additional lift
+Code changes: Increased the negative `margin-top`/`margin-right` adjustments for `.nav-circle-btn` inside the <=768px, <=576px, and <=420px media queries in `src/styles/main.css` so the hamburger icon rides even higher and slightly more to the right on smaller screens while keeping desktop/tablet unaffected.
+Decisions: Maintain relative positioning tied to the header; use progressively larger offsets on narrower breakpoints for consistent visual spacing near the viewport edge.
+Next steps: Spot-check header alignment on 768px, 576px, and 420px widths to confirm the icon remains fully visible and doesn’t overlap adjacent UI elements.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger pure vertical lift
+Code changes: Adjusted `src/styles/main.css` so `.nav-circle-btn` uses stronger negative `margin-top` values (−18px, −22px, −24px across the ≤768px/≤576px/≤420px breakpoints) while resetting `margin-right` to 0, keeping the icon centered horizontally but moved higher on mobile.
+Decisions: Preserve the “moves with the header” requirement and remove horizontal nudges so only the requested upward shift remains.
+Next steps: Recheck the header on common phone widths to ensure the higher position doesn’t collide with the top edge or other elements.
+
+Date: 2025-11-24
+Time: 16:43:24
+Topics: Mobile hamburger further lift
+Code changes: In `src/styles/main.css`, increased the negative `margin-top` for `.nav-circle-btn` to −24px (≤768px), −28px (≤576px), and −32px (≤420px) so the icon sits even closer to the top edge on smaller screens while keeping horizontal alignment unchanged.
+Decisions: Continue using relative positioning with zero right margin to keep the button aligned with the header while satisfying the stronger upward offset request.
+Next steps: Verify on devices around 768px/576px/420px to confirm the icon stays visible and doesn’t overlap the viewport edge or header content.
+
+Date: 2025-11-24
+Time: 16:44:43
+Topics: Mobile hamburger extreme lift
+Code changes: Updated `src/styles/main.css` once more so `.nav-circle-btn` now uses `margin-top` values of −30px (≤768px), −34px (≤576px), and −38px (≤420px), keeping `margin-right: 0` while pushing the icon even closer to the top edge on mobile screens.
+Decisions: Maintain the same relative positioning strategy; continue scaling the offset with smaller breakpoints for consistency.
+Next steps: Re-test on representative mobile widths to ensure the icon doesn’t clip against the viewport edge or overlap header content.
+
+Date: 2025-11-24
+Time: 16:46:12
+Topics: Mobile hamburger ultra lift
+Code changes: Further increased the negative `margin-top` values for `.nav-circle-btn` in `src/styles/main.css` to −36px (≤768px), −40px (≤576px), and −44px (≤420px), leaving `margin-right: 0` so the icon continues moving straight upward on smaller screens.
+Decisions: Keep scales consistent per breakpoint and maintain relative positioning to avoid layout shifts elsewhere.
+Next steps: Validate on phones/tablets to be sure the icon still renders fully without clipping at the very top edge.
+
+Date: 2025-11-24
+Time: 16:49:26
+Topics: Mobile header logo downward offset
+Code changes: Added positive `margin-top` values for `.logo-image` within the ≤768px, ≤576px, ≤420px, ≤374px, and 375–479px media queries in `src/styles/main.css` so the header logo sits slightly lower on mobile; tweaks scale from +6px down to +10px depending on breakpoint.
+Decisions: Keep desktop/tablet untouched and use simple margin offsets to avoid structural layout changes.
+Next steps: Spot-check the header on common phone widths (768/576/420/375) to ensure the new spacing feels balanced and doesn’t crowd the nav circle button.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger visibility
+Code changes: Updated `src/components/Header.jsx` so `checkHeroInView` immediately returns true on viewports ≤768px, ensuring the hamburger button remains visible across all pages once the site is viewed on mobile, regardless of hero visibility.
+Decisions: Leave tablet/desktop behavior unchanged; only short-circuit the hero check for small screens to keep the icon accessible.
+Next steps: Verify on actual devices that the hamburger now stays visible after scrolling past the hero on mobile routes.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide header on mobile when FlowAnimation/footer is visible
+Code changes: In `src/pages/Home.jsx`, extended the FlowAnimation visibility effect to track viewport width, continue hiding `MinimalistNav`, and toggle a `body.hide-header-in-flow` class whenever the footer enters view on ≤768px screens (also cleans up on resize/unmount). Added a mobile-only CSS rule in `src/styles/main.css` so `.header` fades out and becomes non-interactive while that class is present.
+Decisions: Keep the nav hiding behavior for all breakpoints; scope header suppression to mobile to match the request while leaving desktop header unchanged.
+Next steps: Verify on devices/emulators that both the header and MinimalistNav reappear immediately after scrolling above the FlowAnimation section; adjust thresholds if further tuning is needed.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Global FlowAnimation visibility handling across navigation pages
+Code changes: Updated `src/components/FlowAnimation.jsx` to observe its viewport visibility, dispatch a `flowAnimationVisibility` custom event, and toggle the `body.hide-header-in-flow` class automatically on mobile. `MinimalistNav.jsx` now listens for this event to add a `flow-hidden` state so the nav hides on any page when the footer is in view, eliminating the Home-specific show/hide state. `src/pages/Home.jsx` now always renders `MinimalistNav` and relies on the shared event, and `src/styles/main.css` gained `.minimalist-nav.flow-hidden` styling to fade the nav out cleanly.
+Decisions: Centralize FlowAnimation detection so every page with the footer automatically hides both header (mobile) and MinimalistNav, reducing duplicated scroll logic.
+Next steps: Smoke test Work/Team/Contact/Feed pages in mobile view to confirm both the header and bottom nav disappear while the FlowAnimation section is on screen and return immediately afterward.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Our Team board slider text visibility on mobile
+Code changes: Set the inline `opacity` of the `.board-members-slider` in `src/pages/OurTeam.jsx` based on `isSectionInView`, overriding the mobile breakpoint default that kept the slider at 0 opacity. Once the Board section enters the viewport, the slider (images + text) now fades in on phones just like desktop.
+Decisions: Keep the CSS fade-in behavior but control visibility from React so content is never stuck invisible when the section is in view.
+Next steps: Scroll through the Board of Directors section on a phone/emulator to confirm both portraits and their text appear as soon as the section intersects the viewport.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile-responsive Board of Directors animation enhancements
+Code changes: Updated `src/pages/OurTeam.jsx` so the slider width on mobile matches the viewport, added per-card animation styles via `getMobileCardStyle`, and set the slider’s inline layout (padding/align) when `isMobile` is true. In `src/styles/main.css`, the board container now hides overflow while the ≤768px/≤480px breakpoints give the slider full width, remove gaps, and let each card occupy 100% width with smoother transitions.
+Decisions: Preserve the existing scroll-driven timeline but layer on mobile-friendly animations and layout logic so portraits/text stay fully visible while still animating card-by-card.
+Next steps: Review the Board section on devices/emulators to confirm each card fills the screen, animates smoothly, and that desktop layout remains unaffected.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide Board slider scrollbars on mobile
+Code changes: Within the ≤768px/≤480px breakpoints of `src/styles/main.css`, set `.board-members-slider` to hide overflow and applied cross-browser scrollbar suppression (`scrollbar-width: none`, `-ms-overflow-style: none`, `::-webkit-scrollbar { display: none; }`) so the right/bottom scrollbars no longer appear on phones.
+Decisions: Keep the slider scrollable via JS but remove the visual scrollbars for a cleaner mobile presentation.
+Next steps: Spot-check the Board section on iOS/Android browsers to ensure the scrollbars are gone while the animation still operates normally.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Board mobile card centering (2nd–5th images)
+Code changes: In `src/pages/OurTeam.jsx`, added `sliderDisplayIndex` that rounds `scrollProgress` on mobile, uses it for `translateX`, and feeds it into `getMobileCardStyle()` so each portrait snaps into a centered, full-opacity state after the first card.
+Decisions: Keep the scroll timeline intact but discretize mobile steps so all cards get the same focused view.
+Next steps: Scroll the Board section on phones to confirm each of the later cards now appears as clearly as the first; adjust the rounding logic if needed.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Board slider percentage translation on mobile
+Code changes: Switched the mobile slider transform in `src/pages/OurTeam.jsx` from pixel-based widths to percentage steps (`translateX(-index * 100%)`) with a smooth transition, ensuring each full-width card aligns perfectly in view regardless of device width.
+Decisions: Keep desktop translation tied to measured pixel widths while letting mobile rely on percentage-based snapping for consistent framing.
+Next steps: Recheck the Board section on a range of phone widths to confirm every card now fills the viewport without partial clipping.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide MinimalistNav on mobile across all pages
+Code changes: In `src/styles/main.css`, added a `@media (max-width: 768px)` rule that sets `.minimalist-nav` to `display: none !important`, removing the bottom mini navigation bar on phones/tablets while leaving desktop/tablet behavior unchanged.
+Decisions: Use a CSS-only approach to keep existing JS scroll/visibility logic intact but visually suppress the mini nav on mobile as requested.
+Next steps: Verify on mobile devices/emulators that the MinimalistNav no longer appears on any route, and that desktop layouts remain unaffected.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Our Team hero mobile layout fix
+Code changes: Adjusted `src/styles/main.css` so `.team-hero` on ≤768px uses `height: auto` with `min-height: calc(100vh - 72px)` and top padding to clear the header, and aligned `.team-hero-overlay` to the bottom. Simplified the small-screen hero padding to keep the "We are Vulture Lines." title fully visible and comfortably placed on mobile.
+Decisions: Keep the full-screen feel while preventing the header from overlapping or cropping the hero content on phones.
+Next steps: Check the Our Team hero on several mobile widths to ensure the background image fills the viewport and the heading sits clearly above the fold.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive home page services section redesign - content first, then image with carousel navigation
+Code changes: 
+- In `src/pages/Home.jsx`: Added `mobileServiceIndex` state for carousel navigation. Created separate mobile layout structure that displays: "Our Services" heading → service title → description → "Find More" button with left/right arrow buttons → image carousel. Added `handleMobileServicePrev` and `handleMobileServiceNext` functions for arrow navigation. Mobile layout conditionally renders when `isServicesMobile` is true (≤768px breakpoint). Updated mobile detection from 1024px to 768px to match CSS breakpoint. Mobile image carousel uses `translateX` transform with smooth transitions to slide between services.
+- In `src/styles/main.css`: Added comprehensive mobile-specific styles for services section including `.services-mobile-content`, `.services-mobile-image-container`, `.services-mobile-image-track`, `.service-mobile-image-item` for proper layout ordering (content first, image second). Added `.service-mobile-actions` flex container for button and arrows. Styled `.service-arrow-btn` with circular design, hover effects, and proper touch targets (44px on mobile, 40px on small mobile). Added responsive styles for ≤480px breakpoint with adjusted padding and arrow button sizes. Mobile layout uses flexbox ordering to ensure content appears before image.
+Decisions: Mobile-first approach with carousel navigation provides better UX on mobile devices. Content-first layout ensures users see service information before images. Arrow buttons positioned next to "Find More" button for easy navigation. Smooth sliding transitions create polished carousel experience. Desktop layout remains unchanged with scroll-based elevator animation.
+Next steps: Test mobile services section on actual devices; verify arrow navigation works smoothly; check image carousel sliding animation; verify layout order (heading → title → content → button/arrows → image) on various mobile screen sizes.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile services section scroll fix and spacing reduction
+Code changes: 
+- In `src/styles/main.css`: Fixed mobile services section to prevent unwanted scroll by setting `height: auto !important`, `min-height: auto !important`, and `overflow: visible` on mobile breakpoint (≤768px). Disabled scroll animation classes on mobile (`.services-section.is-fixed` set to `position: relative !important`). Reduced mobile services section padding from `2rem 0` to `1.5rem 0 0.5rem 0` (reduced bottom padding). Reduced mobile content padding from `2rem 1.5rem` to `1.5rem 1.5rem 1rem 1.5rem` (reduced bottom padding). Added `margin-top: 0 !important` and `padding-top: 0 !important` to `.client-experience-section` on mobile to eliminate gap between services and client experience sections. Ensured services container is always visible on mobile with `opacity: 1 !important`, `pointer-events: auto !important`, and `visibility: visible !important`.
+Decisions: Mobile services section now uses static carousel navigation instead of scroll-based animation to prevent unwanted scrolling. Reduced spacing creates tighter flow between services and client experience sections. No scroll animation on mobile provides better UX with arrow-based navigation.
+Next steps: Test on mobile devices to verify no unwanted scrolling; check spacing between sections looks balanced; verify carousel navigation works smoothly without scroll interference.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile excellence section scroll fix and spacing reduction
+Code changes:
+- In `src/pages/Home.jsx`: Disabled excellence section pinning animation on mobile (≤768px) by checking `window.innerWidth` in `handleExcellencePin` and returning early with `isExcellencePinned` and `isExcellencePast` set to false. Disabled excellence scroll-based size increase animation on mobile by checking `window.innerWidth <= 768` in `handleExcellenceScroll` and returning early with `progress` set to 0. Added resize event listener to excellence scroll handler for proper mobile detection.
+- In `src/styles/main.css`: Fixed excellence wrapper height on mobile by setting `height: auto !important` and `min-height: auto !important` to prevent unwanted scroll from `200vh` desktop height. Disabled excellence section pinning on mobile by forcing `.excellence-section.is-pinned` to `position: relative !important` with auto positioning. Disabled excellence section past state on mobile by forcing `.excellence-section.is-past` to `position: relative !important`. Reduced excellence section padding from `1.5rem 0` to `1.5rem 0 0.25rem 0` (reduced bottom padding). Added `margin-bottom: 0 !important` and `padding-bottom: 0 !important` to excellence wrapper and section on mobile. Reduced services section top padding from `1.5rem 0` to `0.5rem 0` on mobile to minimize gap between excellence and services sections. Added `margin-top: 0 !important` to services section on mobile.
+Decisions: Excellence section now uses static layout on mobile instead of scroll-based pinning animation to prevent unwanted scrolling. Reduced spacing creates tighter flow between excellence and services sections. No scroll animations on mobile provide better UX with natural scrolling behavior.
+Next steps: Test on mobile devices to verify no unwanted scrolling in excellence section; check spacing between excellence and services sections looks balanced; verify natural scroll behavior works smoothly without animation interference.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Remove excellence section content disappear animation on scroll
+Code changes:
+- In `src/styles/main.css`: Removed all initial `opacity: 0` states from excellence section elements that caused content to disappear. Changed `.excellence-title span` from `opacity: 0` and `transform: translateX(-50px)` to `opacity: 1` and `transform: translateX(0)` so title is always visible. Changed `.excellence-subtitle` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so subtitle is always visible. Changed `.excellence-description` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so description is always visible. Changed `.excellence-buttons` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so buttons are always visible. Changed `.emblem-number` from `opacity: 0` and `transform: scale(0.5) translateX(40px)` to `opacity: 1` and `transform: scale(1) translateX(40px)` so number is always visible. Changed `.emblem-text` from `opacity: 0` and `transform: translateY(20px) translateX(40px)` to `opacity: 1` and `transform: translateY(0) translateX(40px)` so text is always visible. Changed `.rotating-group` from `opacity: 0` to `opacity: 1` so circular text is always visible.
+Decisions: All excellence section content now remains visible at all times without disappearing animations. Content appears immediately without waiting for scroll-triggered animations. Removed fade-in animations that caused content to disappear during scroll.
+Next steps: Test excellence section to verify all content remains visible during scroll; verify no content disappears when scrolling through the section; check that all elements (title, subtitle, description, buttons, emblem) are always visible.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive section order - Client Experience before Projects
+Code changes:
+- In `src/styles/main.css`: Ensured Client Experience section appears before Projects section on mobile by maintaining natural HTML order (no flexbox reordering). Added `margin-bottom: 0 !important` and `padding-bottom: 0.5rem !important` to `.client-experience-section` on mobile for proper spacing. Added `margin-top: 0 !important` and `padding-top: 0.5rem !important` to `#projects` section on mobile to create minimal gap between Client Experience and Projects sections. Removed any flexbox ordering rules that would reorder sections on mobile.
+Decisions: Mobile section order now matches desktop order: Services → Client Experience → Projects. Natural HTML order is maintained without CSS flexbox reordering. Minimal spacing (0.5rem) between Client Experience and Projects sections provides clean flow.
+Next steps: Test on mobile devices to verify Client Experience appears before Projects; verify section order matches desktop layout; check spacing between sections looks balanced.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience logos hidden by Projects on mobile
+Code changes:
+- In `src/styles/main.css`: Restored the mobile stacking context so Client Experience images/logos sit above Projects. Reapplied `min-height: 100vh !important`, extra bottom padding, `position: relative`, `z-index: 2`, and `overflow: visible` to `.client-experience-section` plus the nested containers (`.client-experience-split`, `.client-experience-left`, `.client-experience-right`, `.laptop-image-container`, `.client-logos-grid`, `.client-logo`, `.client-overlay`). Added a 2rem top padding and lower z-index to `#projects` so it only begins after the Client Experience content finishes. Set `.client-experience-right` to minimum 320px height (50vh) so the laptop image has room on small screens.
+Decisions: Client Experience section now fully displays before Projects on phones, preventing logos/images from being clipped or overlapped. Users see the entire client block before Projects enters the viewport.
+Next steps: Re-test at 768px and 480px widths to ensure the spacing feels natural and no overlap reappears.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Projects heading overlapped by Client Experience imagery on mobile
+Code changes:
+- In `src/styles/main.css`: Increased the spacing between the Client Experience and Projects sections on mobile by bumping `.client-experience-section` bottom padding/margin to `3rem` and raising `#projects` top padding to `3rem`. This ensures the “OUR PROJECTS” heading appears after a clear gap so the remaining Client Experience logos no longer sit on top of it.
+Decisions: Creating a larger handoff buffer between the two sections prevents visual overlap without changing the scroll order or z-index behavior.
+Next steps: Verify on devices/emulators (≤768px) that the heading now renders with clear whitespace and no client logos covering it; adjust spacing further if additional breathing room is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience z-index cleanup so Our Projects title renders above imagery
+Code changes:
+- In `src/styles/main.css`: Removed the elevated z-indices from the Client Experience stack and instead raised the `#projects` z-index to 3 (with a white background). `.client-experience-section` and its nested containers now rely on the natural DOM stacking order, preventing their logos/laptop image from overlaying the “OUR PROJECTS” title as it enters the viewport.
+Decisions: Restoring default stacking order ensures the Projects heading always sits on top while still letting Client Experience content display fully within its own section.
+Next steps: Recheck on small devices to confirm the heading is no longer obscured and that no additional z-index adjustments are required.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Responsive spacing between Client Experience and Projects sections
+Code changes:
+- In `src/styles/main.css`: Replaced the fixed 3rem buffer with responsive `clamp` values so the gap scales with viewport height. `.client-experience-section` now ends with `margin-bottom: clamp(3rem, 12vh, 6rem)` and `padding-bottom: clamp(2.5rem, 10vh, 5rem)`, while `#projects` begins with `padding-top: clamp(3rem, 12vh, 6rem)`. This guarantees taller devices get a larger handoff while smaller phones keep a compact spacing.
+Decisions: Dynamic spacing ensures the “OUR PROJECTS” heading always appears below the Client Experience block without overlap across various screen heights.
+Next steps: Spot-check at 768px, 600px, and 480px widths to confirm the gap looks natural; tweak clamp ranges if more/less space is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Increase Client Experience → Projects gap further for tall displays
+Code changes:
+- In `src/styles/main.css`: Expanded the responsive gap by using `clamp(4rem, 16vh, 8rem)` for the Client Experience bottom margin and Projects top padding (with slightly larger padding-bottom on Client Experience). Added an explicit white background to both sections to guarantee a clean transition even if underlying imagery extends beyond its container.
+Decisions: Larger, height-aware spacing plus matching backgrounds ensures the Projects heading can never be covered by lingering client images on taller devices.
+Next steps: Re-test on very tall phones/tablets (e.g., 896px+ viewport height) to verify the separation feels balanced; adjust clamp maximums if additional space is still required.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Final buffer + heading z-index for Our Projects
+Code changes:
+- In `src/styles/main.css`: Increased the Client Experience bottom margin/padding to `clamp(5rem, 18vh, 10rem)`/`clamp(3.5rem, 14vh, 6.5rem)` and matched `#projects` top padding (`clamp(5rem, 18vh, 10rem)`). Also forced the projects header elements to `position: relative; z-index: 4` so the “OUR PROJECTS” title always renders above any lingering imagery.
+Decisions: Combining a larger responsive gap with an explicit z-index on the heading guarantees no overlap across tall or short devices.
+Next steps: Confirm on multiple breakpoints that the heading remains clear; tweak clamp values if a smaller/larger gap is preferred.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile layout cleanup
+Code changes:
+- In `src/styles/main.css`: Redesigned the ≤768px Client Experience layout—removed forced 100vh sizing, added a padded/rounded container, stacked the split content vertically with larger gaps, refreshed the logo grid cards, and reworked the laptop image block so it uses a dedicated gradient card with proper padding. The section now reads as logos grid → showcase image with centered caption, each with breathing room.
+Decisions: The mobile view no longer looks like a squashed desktop split; it now feels like a purpose-built block with clear hierarchy and spacing.
+Next steps: Review across common phone widths to confirm the new spacing feels balanced; tweak card sizes if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile polish (logo cards + hero image)
+Code changes:
+- In `src/styles/main.css`: Fine-tuned the ≤768px Client Experience styles with centered heading text, card shadows, a fixed aspect-ratio hero image, and a tighter caption overlay so the showcase block no longer overlaps the logo grid. The section now stacks cleanly with consistent spacing before the Projects area.
+Decisions: The refreshed styling makes the mobile Client Experience feel deliberate and prevents the hero image from intruding on the logos.
+Next steps: Verify on small phones (≤420px) that the card grid and hero block still have enough breathing room; tweak gaps if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience vs Projects overlap fix
+Code changes:
+- In `src/styles/main.css`: Raised the Client Experience section z-index, expanded its bottom margin, lowered `#projects` stacking context, removed the dark overlay from the hero caption, and ensured the logos grid uses a proper grid layout. These tweaks stop the projects card from overlaying the client block while keeping the heading readable.
+Decisions: Separation between the two sections is now purely structural (spacing + stacking), eliminating the double overlay seen on phones.
+Next steps: Recheck at 768px/600px/480px to confirm there’s no remaining overlap; adjust spacing if additional breathing room is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile layout – logos then image
+Code changes:
+- In `src/styles/main.css`: Centered the heading block, limited the logos grid width, added auto margins, and ensured the showcase image uses a fixed aspect ratio with the caption placed below it. Tapping a logo now simply swaps the image in the reserved area without any overlap because the image card sits in its own column under the grid.
+Decisions: The mobile Client Experience section now reads sequentially (heading → logos → selected image). There’s no longer a double overlay, and the image always displays fully beneath the icons.
+Next steps: Verify interaction on devices to confirm the image swaps smoothly; fine-tune card spacing if desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience image spacing on mobile
+Code changes:
+- In `src/styles/main.css`: Increased the logo grid’s bottom margin and the showcase block’s top margin so the selected client image sits farther below the last icon (margin-bottom `clamp(2rem, 6vw, 3rem)` on the grid and margin-top `clamp(2.5rem, 7vw, 3.5rem)` on `.client-experience-right`).
+Decisions: Extra spacing prevents the hero image from hiding the final row of logos on phones.
+Next steps: Review on target devices; tweak margins if you’d like even more separation.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience spacing bump (round 2)
+Code changes:
+- In `src/styles/main.css`: Added even more space between the logos and the image (`margin-bottom: clamp(2.5rem, 8vw, 4rem)` on `.client-logos-grid` and `margin-top: clamp(3.5rem, 9vw, 4.5rem)` on `.client-experience-right`) so the hero card clears the last icon row completely.
+Decisions: The increased buffer guarantees the image never overlaps the final logo, even on short devices.
+Next steps: Spot-check on 375px/414px widths; adjust the clamps if more/less space is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Final client-image spacing increase
+Code changes:
+- In `src/styles/main.css`: Raised the logos grid bottom margin to `clamp(3.5rem, 10vw, 5rem)` and the image block top margin to `clamp(4.5rem, 11vw, 5.5rem)` so there’s a very clear gap between the last icon and the hero image on small screens.
+Decisions: This ensures the image never hides the final card, even on the shortest viewports.
+Next steps: Re-test on target devices; if it now feels too wide, we can dial the clamps back.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience image spacing – final bump
+Code changes:
+- In `src/styles/main.css`: Pushed the logos grid bottom margin to `clamp(4.5rem, 12vw, 6rem)` and the showcase block top margin to `clamp(5.5rem, 13vw, 6.5rem)` so the hero image sits even farther below the icons.
+Decisions: The larger buffer guarantees the image won’t overlap the last icon row on any phone height.
+Next steps: Validate on target devices; reduce the spacing later if desired.
+
+Date: 2025-11-27
+Time: 19:39:00
+Topics: Our Service carousel imagery text removal
+Code changes: Removed the keyword stack and copyright label from each 3D carousel card in `src/pages/OurService.jsx` so only the imagery (and optional V-logo overlay) remains visible across desktop and mobile.
+Decisions: Keep the carousel structure and lighting overlays unchanged while stripping textual elements as requested.
+Next steps: Manually verify the carousel on both desktop and mobile breakpoints to confirm the cards now render imagery-only without layout shifts.
+
+Date: 2025-11-27
+Time: 19:43:17
+Topics: Our Service carousel V-logo removal
+Code changes: Deleted the inline `VLogo` SVG component and its conditional overlay block inside `src/pages/OurService.jsx`, leaving the rotating cards as pure imagery without additional graphics.
+Decisions: Maintain the same image/overlay styling while removing the brand mark entirely per request.
+Next steps: Review the carousel on desktop and mobile to ensure removal doesn’t affect card spacing or lighting.
+
+Date: 2025-11-27
+Time: 19:52:11
+Topics: Mobile services arrows visibility
+Code changes: Updated `.service-mobile-actions`, `.service-nav-arrows`, and `.service-arrow-btn` styles in `src/styles/main.css` to force fixed circular sizing (with `!important` padding resets), add contrasty white backgrounds, borders, and shadows, and tweak the small-mobile overrides so the arrow buttons sit above content and stay visible against any backdrop.
+Decisions: Keep HTML untouched while ensuring the arrows remain legible and tappable across all mobile breakpoints by resolving conflicting global button rules.
+Next steps: Smoke-test the Home page on ≤768px viewports to confirm the arrows now display as white circles with green icons and continue to advance the services carousel.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Custom cursor dot circle size reduction
+Code changes: In `src/styles/main.css`, reduced `.custom-cursor` size from 20px to 16px (width and height). In `src/components/CustomCursor.jsx`, adjusted positioning offset from 10px to 8px to keep cursor centered (half of new 16px size).
+Decisions: Slightly smaller cursor provides more subtle visual presence while maintaining visibility and functionality. Positioning offset adjusted proportionally to maintain proper centering.
+Next steps: Verify cursor appears correctly centered on mouse position; test hover states and client section cursor behavior.
