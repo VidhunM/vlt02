@@ -484,38 +484,43 @@ const Home = () => {
   // Excellence section scroll-based size increase (desktop only)
   useEffect(() => {
     const handleExcellenceScroll = () => {
-      if (excellenceRef.current) {
-        // Disable scroll animation on mobile
-        if (window.innerWidth <= 768) {
-          setExcellenceScrollProgress(0)
-          return
-        }
-        
-        const rect = excellenceRef.current.getBoundingClientRect()
-        const windowHeight = window.innerHeight
-        
-        // Calculate scroll progress through the excellence section
-        // When section enters viewport: progress starts at 0
-        // When section is fully scrolled past: progress reaches 1
-        const sectionTop = rect.top
-        const sectionBottom = rect.bottom
-        const sectionHeight = rect.height
-        
-        let progress = 0
-        
-        // Section is in viewport
-        if (sectionTop < windowHeight && sectionBottom > 0) {
-          // Calculate how much of section has been scrolled
-          // Progress from 0 to 1 as section moves through viewport
-          const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
-          progress = Math.min(1, Math.max(0, 1 - (sectionBottom / (windowHeight + sectionHeight * 0.5))))
-        } else if (sectionBottom <= 0) {
-          // Section fully scrolled past
-          progress = 1
-        }
-        
-        setExcellenceScrollProgress(progress)
+      if (!excellenceWrapperRef.current || !excellenceRef.current) {
+        return
       }
+      
+      // Disable scroll animation on mobile
+      if (window.innerWidth <= 768) {
+        setExcellenceScrollProgress(0)
+        return
+      }
+      
+      const wrapperRect = excellenceWrapperRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Calculate scroll progress through the excellence wrapper
+      // The wrapper is 200vh tall, section pins when wrapper top reaches 0
+      const wrapperTop = wrapperRect.top
+      const wrapperHeight = wrapperRect.height
+      
+      let progress = 0
+      
+      // Calculate progress based on how much of the wrapper has been scrolled
+      // When wrapper top is at windowHeight: progress = 0
+      // When wrapper top is at 0 (pinned): progress starts increasing
+      // When wrapper bottom is at windowHeight: progress = 1
+      
+      if (wrapperTop <= windowHeight && wrapperRect.bottom >= 0) {
+        // Section is in viewport or pinned
+        // Calculate progress: 0 when wrapper top = windowHeight, 1 when wrapper bottom = windowHeight
+        const scrollableDistance = wrapperHeight - windowHeight
+        const scrolled = Math.max(0, windowHeight - wrapperTop)
+        progress = Math.min(1, Math.max(0, scrolled / scrollableDistance))
+      } else if (wrapperRect.bottom < 0) {
+        // Wrapper fully scrolled past
+        progress = 1
+      }
+      
+      setExcellenceScrollProgress(progress)
     }
     
     window.addEventListener('scroll', handleExcellenceScroll, { passive: true })
@@ -813,7 +818,7 @@ const Home = () => {
                 className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}
                 style={{
                   fontSize: `clamp(${1.5 * (1 + excellenceScrollProgress * 0.35)}rem, ${3 * (1 + excellenceScrollProgress * 0.35)}vw, ${2 * (1 + excellenceScrollProgress * 0.35)}rem)`,
-                  transition: 'font-size 0.1s ease-out'
+                  transition: 'font-size 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
               >
                 Build success in Software Engineer and Property Services
@@ -822,7 +827,7 @@ const Home = () => {
                 className={`excellence-description ${isVisible ? 'animate-description' : ''}`}
                 style={{
                   fontSize: `clamp(${0.9 * (1 + excellenceScrollProgress * 0.28)}rem, ${1.8 * (1 + excellenceScrollProgress * 0.28)}vw, ${1 * (1 + excellenceScrollProgress * 0.28)}rem)`,
-                  transition: 'font-size 0.1s ease-out'
+                  transition: 'font-size 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
               >
             If you mind thinks about mobile/website development, then we have created a niche for ourselves. We started in 2021 with just 3 employees and now have expanded ourselves to 20+ which shows about the growth and the quality of work that we did over the years.
@@ -833,7 +838,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}
                 style={{
                   transform: `scale(${1 + excellenceScrollProgress * 0.2})`,
-                  transition: 'transform 0.1s ease-out'
+                  transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
               >
                 <a 

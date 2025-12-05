@@ -8740,9 +8740,15 @@ body.transitioning {
     justify-content: center !important;
     padding-top: 15px !important;
     padding-bottom: 15px !important;
+    gap: 10px !important;
   }
 
   .flow-copyright {
+    font-size: clamp(12px, 3vw, 16px) !important;
+    text-align: center !important;
+  }
+
+  .flow-privacy-policy {
     font-size: clamp(12px, 3vw, 16px) !important;
     text-align: center !important;
   }

@@ -170,8 +170,9 @@ const FlowAnimation = () => {
         </div>
       </div>
       {/* Bottom Bar */}
-      <div className="flow-bottom-bar" style={{ borderTop: '2px solid #181818', background: '#fff', minHeight: 62, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 40px' }}>
+      <div className="flow-bottom-bar" style={{ borderTop: '2px solid #181818', background: '#fff', minHeight: 62, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
         <div className="flow-copyright" style={{ color: '#181818', fontSize: 20 }}>&copy; 2025 Vulturelines. All rights reserved.</div>
+        <div className="flow-privacy-policy" style={{ color: '#181818', fontSize: 20, cursor: 'pointer' }}>Privacy Policy</div>
       </div>
     </div>
   );
